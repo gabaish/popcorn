@@ -1,0 +1,275 @@
+/* General styles */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(180deg, #6D489B 40%, #BD06C1 100%);
+    background-attachment: fixed;
+    background-size: cover;
+    color: white;
+    text-align: center;
+}
+
+h1 {
+    font-size: 3rem;
+    margin: 20px 0 10px;
+}
+
+p {
+    font-size: 1.2rem;
+}
+
+/* Layout */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Picks section */
+.picks-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.pick-card {
+    position: relative;
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 20px;
+    width: 250px; /* Adjusted width */
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+
+.movie-placeholder {
+    background: #f5f5f5;
+    border-radius: 10px;
+    padding: 20px;
+    width: 100%;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+}
+
+.movie-placeholder p {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0;
+    color: #333;
+}
+
+.movie-placeholder i {
+    font-size: 2.5rem;
+    color: #bbb;
+    margin-top: 10px;
+}
+
+.card-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Align input and button side by side */
+    gap: 10px; /* Space between input and button */
+    width: 100%; /* Full width of the card */
+}
+
+.card-controls input {
+    flex: 1; /* Input takes up remaining space */
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.dice-button {
+    background: #6a0dad;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.dice-button i {
+    font-size: 1.2rem;
+}
+
+.dice-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.dice-button:active {
+    transform: scale(0.95);
+}
+
+.pick-button {
+    background: #6a0dad;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.icon img {
+    width: 250px; /* Set the width */
+    height: 250px; /* Set the height */
+    object-fit: cover; /* Ensure the image fits inside the 100px cube */
+    margin-left: 20px;
+}
+
+/* Shuffle section */
+.shuffle-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.shuffle-button {
+    background: #f3a6d4; /* Light pink */
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.shuffle-button i {
+    color: #6a0dad; /* Purple color for the icon */
+    font-size: 1.5rem; /* Adjust icon size */
+}
+
+.shuffle-button:hover {
+    transform: scale(1.1); /* Slightly enlarge on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+}
+
+.shuffle-button:active {
+    transform: scale(0.95); /* Slightly shrink when clicked */
+}
+
+/* Results section */
+.results-container {
+    display: flex; /* Use flexbox for horizontal layout */
+    flex-wrap: wrap; /* Allow wrapping to the next row if there's not enough space */
+    gap: 15px; /* Add spacing between items */
+    justify-content: center; /* Center items horizontally */
+    padding: 20px;
+    background: #f9f9f9; /* Optional: Background color for the container */
+    border-radius: 10px; /* Optional: Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Optional: Subtle shadow */
+    width: 100%;
+    margin: 0 auto; /* Center the container on the page */
+}
+
+.result-item {
+    background: #ffffff; /* White background for each result */
+    border: 1px solid #ccc; /* Optional: Light border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 15px; /* Spacing inside each item */
+    text-align: center; /* Center text inside the item */
+    font-size: 1rem;
+    min-width: 150px; /* Set a minimum width for consistency */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for elevation */
+    flex: 1 1 calc(20% - 15px); /* Ensure items scale proportionally */
+    max-width: 200px; /* Optional: Limit the maximum width */
+}
+
+.result-item:hover {
+    background: #f0f0f0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.results-container.hidden {
+    display: none;
+}
+
+.results-grid {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.result-card {
+    background: white;
+    color: black;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    width: 150px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.result-card img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+#movie-input {
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-size: 1rem;
+}
+
+.suggestions {
+    position: absolute; /* Position the list relative to the pick-card */
+    top: 100%; /* Place it right below the input */
+    left: 0; /* Align with the left edge of the pick-card */
+    background: white; /* Ensure background is white for contrast */
+    border: 1px solid #ccc; /* Add a border for separation */
+    border-radius: 5px; /* Match the input's border-radius */
+    width: calc(100%); /* Make it match the pick-card's width with some padding */
+    max-width: 300px; /* Optional: Limit maximum width */
+    max-height: 150px; /* Limit height for long lists */
+    overflow-y: auto; /* Enable scrolling for long lists */
+    z-index: 1000; /* Ensure it appears above other elements */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Add a soft shadow */
+    margin-top: 5px; /* Add a small gap below the input */
+    padding: 5px 0; /* Space inside the list */
+    font-size: 1rem; /* Adjust text size for readability */
+}
+
+.suggestions li {
+    padding: 10px; /* Add padding to each list item */
+    list-style: none; /* Remove bullet points */
+    cursor: pointer; /* Make the items clickable */
+    color: black; /* Ensure text is black for visibility */
+}
+
+.suggestions li:hover {
+    background: #f0f0f0; /* Highlight on hover */
+    color: #333; /* Darker gray for hover */
+}
+/* Hidden class for dropdown */
+.hidden {
+    display: none;
+}

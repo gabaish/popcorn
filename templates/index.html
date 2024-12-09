@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Recommender</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Popcorn</h1>
+            <p>Helps you pick the best movie for your date night</p>
+        </header>
+        <main>
+            <div class="picks-container">
+                <div class="pick-card">
+                    <div class="movie-placeholder">
+                        <p id="your-placeholder">Your Pick</p>
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <div class="card-controls">
+                        <input type="text" id="your-movie-input" placeholder="Type a movie name" autocomplete="off">
+                        <ul id="your-movie-suggestions" class="suggestions hidden"></ul>
+                        <button class="dice-button">
+                            <i class="fas fa-dice"></i>
+                        </button>
+                    </div>
+                </div>                
+                <div class="icon">
+                    <img src="{{ url_for('static', filename='popcorn.png') }}" alt="Popcorn">
+                </div>
+                <div class="pick-card">
+                    <div class="movie-placeholder">
+                        <p id="their-placeholder">Their Pick</p>
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <div class="card-controls">
+                        <input type="text" id="their-movie-input" placeholder="Type a movie name" autocomplete="off">
+                        <ul id="their-movie-suggestions" class="suggestions hidden"></ul>
+                        <button class="dice-button">
+                            <i class="fas fa-dice"></i>
+                        </button>
+                    </div>
+                </div>   
+                
+            </div>
+            <div class="shuffle-container">
+                <button class="shuffle-button">
+                    <i class="fas fa-random"></i>
+                </button>
+            </div>
+            <section id="results" class="results-container hidden">
+                <h2>Results</h2>
+                <div class="result-item">Movie 1</div>
+                <div class="result-item">Movie 2</div>
+                <div class="result-item">Movie 3</div>
+                <div class="result-item">Movie 4</div>
+                <div class="result-item">Movie 5</div>
+            </section>
+        </main>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
