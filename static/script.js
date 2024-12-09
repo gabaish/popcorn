@@ -149,8 +149,10 @@ document.addEventListener("DOMContentLoaded", () => {
             results.forEach((movie) => {
                 const resultCard = document.createElement("div");
                 resultCard.classList.add("result-card");
+				//ADDED
                 resultCard.innerHTML = `
-                    <p>${movie}</p>
+				    <img src="${movie.poster_url}" alt="${movie.title}" class="movie-poster">
+                    <p>${movie.title}</p>
                 `;
                 resultsContainer.appendChild(resultCard);
             });

@@ -1,11 +1,11 @@
 from flask import Flask, render_template, request, jsonify
-from logic import recommend_for_two_users_with_five_results
+from logic import recommend_for_two_users_with_five_results, get_movie_poster_tmdb
 import pandas as pd
 
 app = Flask(__name__)
 
 # Load your dataset and model
-df = pd.read_csv("data/movies.csv")
+df = pd.read_csv("data/movies2.csv")
 
 # Define your recommendation logic
 def recommend_movies(user_input):
@@ -52,8 +52,17 @@ def get_movie_results():
     results = recommend_for_two_users_with_five_results(movie1, movie2)
     print(results)
     
+    #ADDED
+    # Include posters for each recommendation
+    recommendations_with_posters = []
+    for movie in results:
+        poster_url = get_movie_poster_tmdb(movie)  # Fetch poster URL
+        recommendations_with_posters.append({
+            "title": movie,
+            "poster_url": poster_url if poster_url else "https://via.placeholder.com/500"
+        })
     # Return the results as JSON
-    return jsonify(results)
+    return jsonify(recommendations_with_posters)
 
 if __name__ == "__main__":
     app.run(debug=True)
