@@ -1,34 +1,11 @@
-// Wait until the DOM is fully loaded
 document.addEventListener("DOMContentLoaded", () => {
-    // Reference to the results container
-    const resultsContainer = document.getElementById("results");
-
-    // Example function: Show the results section when a button is clicked
-    const shuffleButton = document.querySelector(".shuffle-button");
-    shuffleButton.addEventListener("click", () => {
-        // Remove the hidden class to display results
-        resultsContainer.classList.remove("hidden");
-    });
-
-    // Example: Add behavior for the "Pick your movie" buttons
-    const pickButtons = document.querySelectorAll(".pick-button");
-    pickButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-            alert("Pick movie functionality not implemented yet.");
-        });
-    });
-});
-
-
-document.addEventListener("DOMContentLoaded", () => {
-    // Handle "Your Pick"
+    // Set up movie input fields with suggestions
     setupMovieInput({
         inputId: "your-movie-input",
         suggestionsId: "your-movie-suggestions",
         placeholderId: "your-placeholder",
     });
 
-    // Handle "Their Pick"
     setupMovieInput({
         inputId: "their-movie-input",
         suggestionsId: "their-movie-suggestions",
@@ -36,138 +13,224 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     function setupMovieInput({ inputId, suggestionsId, placeholderId }) {
-        const movieInput = document.getElementById(inputId); // Target the input field
-        const suggestionsList = document.getElementById(suggestionsId); // Target the suggestions list
-        const moviePlaceholder = document.getElementById(placeholderId); // Target the correct placeholder
+        const movieInput = document.getElementById(inputId);
+        const suggestionsList = document.getElementById(suggestionsId);
+        const moviePlaceholder = document.getElementById(placeholderId);
 
-        // Fetch movie suggestions dynamically
         async function fetchSuggestions(query) {
             const response = await fetch(`/search_movies?query=${query}`);
             return await response.json();
         }
 
-        // Event listener for input typing
         movieInput.addEventListener("input", async () => {
             const query = movieInput.value.trim();
             if (!query) {
-                suggestionsList.classList.add("hidden"); // Hide if no input
+                suggestionsList.classList.add("hidden");
                 return;
             }
 
             const suggestions = await fetchSuggestions(query);
-            suggestionsList.innerHTML = ""; // Clear old suggestions
+            suggestionsList.innerHTML = "";
 
             if (suggestions.length > 0) {
                 suggestions.forEach((movie) => {
                     const listItem = document.createElement("li");
                     listItem.textContent = movie;
 
-                    // On click, update the placeholder and hide the suggestions
                     listItem.addEventListener("click", () => {
-                        movieInput.value = movie; // Update input field
-                        moviePlaceholder.textContent = movie; // Update the placeholder
-                        suggestionsList.classList.add("hidden"); // Hide suggestions
+                        movieInput.value = movie;
+                        moviePlaceholder.textContent = movie;
+                        suggestionsList.classList.add("hidden");
                     });
 
                     suggestionsList.appendChild(listItem);
                 });
 
-                suggestionsList.classList.remove("hidden"); // Show suggestions
+                suggestionsList.classList.remove("hidden");
             } else {
-                suggestionsList.classList.add("hidden"); // Hide if no matches
+                suggestionsList.classList.add("hidden");
             }
         });
 
-        // Hide suggestions when clicking outside the input or dropdown
         document.addEventListener("click", (e) => {
             if (!movieInput.contains(e.target) && !suggestionsList.contains(e.target)) {
                 suggestionsList.classList.add("hidden");
             }
         });
     }
-});
 
+    //ADDED:
+    //fixing titles. need to check if there are other cases as well
+    function formatMovieTitle(title) {
+        // Check if the title ends with a year in parentheses
+        const yearMatch = title.match(/\s*\((\d{4})\)$/);
+        const year = yearMatch ? yearMatch[0] : '';
+        
+        // Remove the year if it exists
+        let nameOnly = yearMatch ? title.slice(0, -yearMatch[0].length) : title;
+        
+        // Check for any article (The, A, An) at the end of the title
+        const articleMatch = nameOnly.match(/, (The|A|An)$/);
+        if (articleMatch) {
+            // Remove the article from the end and add it to the beginning
+            nameOnly = articleMatch[1] + ' ' + nameOnly.slice(0, -(articleMatch[0].length));
+        }
+        
+        // Return the formatted title with the year
+        return `${nameOnly.trim()}${year}`;
+    }
 
-document.addEventListener("DOMContentLoaded", () => {
+    // Set up dice buttons for random movies
     const diceButtons = document.querySelectorAll(".dice-button");
-
-    diceButtons.forEach((button, index) => {
+    diceButtons.forEach((button) => {
         button.addEventListener("click", async () => {
             try {
                 const response = await fetch('/random_movie');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
                 const data = await response.json();
-                const randomMovie = data.movie;
+                
+                // Get the parent pick-card element
+                const pickCard = button.closest('.pick-card');
+                if (!pickCard) {
+                    throw new Error('Could not find parent pick-card');
+                }
+                
+                // Find the placeholder element within this pick-card
+                const placeholder = pickCard.querySelector('.movie-placeholder p');
+                if (!placeholder) {
+                    throw new Error('Could not find placeholder element');
+                }
+                
+                // Update the placeholder text
+                placeholder.textContent = data.movie;
+                
+                // Clear the input field in this pick-card
+                const input = pickCard.querySelector('input[type="text"]');
+                if (input) {
+                    input.value = '';
+                }
 
-                // Find the associated placeholder
-                const moviePlaceholder = button
-                    .closest('.pick-card')
-                    .querySelector('.movie-placeholder p');
-
-                // Update the placeholder with the random movie
-                moviePlaceholder.textContent = randomMovie;
-                const inputField = button.closest(".card-controls").querySelector("input");
-                inputField.value = "";
+                // Hide summary when using dice
+                //summaryContainer.classList.remove('visible');
             } catch (error) {
                 console.error('Error fetching random movie:', error);
                 alert('Could not fetch a random movie. Please try again.');
             }
         });
     });
-});
 
-// event listener for shuffle button - get logic's recommendations 
-document.addEventListener("DOMContentLoaded", () => {
-    const shuffleButton = document.querySelector(".shuffle-button");
-    const resultsContainer = document.getElementById("results");
+    // Set up carousel and movie summary functionality
+    const carouselContainer = document.querySelector(".carousel-container");
+    const summaryContainer = document.getElementById("movie-summary");
+    const carouselContent = document.querySelector(".carousel-content");
+    const scrollLeftButton = document.getElementById("scroll-left");
+    const scrollRightButton = document.getElementById("scroll-right");
 
-    shuffleButton.addEventListener("click", async () => {
-        const movie1 = document.getElementById("your-placeholder").textContent;
-        const movie2 = document.getElementById("their-placeholder").textContent;
+    // Add scroll button functionality
+    if (scrollLeftButton && scrollRightButton) {
+        scrollLeftButton.addEventListener("click", () => {
+            carouselContainer.scrollBy({
+                left: -200,
+                behavior: "smooth"
+            });
+        });
 
-        if (movie1 === "Your Pick" || movie2 === "Their Pick") {
-            alert("Please select both movies first!");
-            return;
-        }
+        scrollRightButton.addEventListener("click", () => {
+            carouselContainer.scrollBy({
+                left: 200,
+                behavior: "smooth"
+            });
+        });
+    }
 
+    async function fetchResults() {
         try {
+            //the selected movies by the users
+            const movie1 = document.getElementById("your-placeholder").textContent;
+            const movie2 = document.getElementById("their-placeholder").textContent;
+    
+            if (movie1 === "Your Pick" || movie2 === "Their Pick") {
+                alert("Please select both movies first!");
+                return;
+            }
+            
+            //fetching the returned 5 recommended movies with posters and summaries
             const response = await fetch("/get_movie_results", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ movie1, movie2 }),
             });
-
+    
             const results = await response.json();
-            console.log("this is the response I got ", results);
-
-            if (results.error) {
-                alert(results.error);
-                return;
+    
+            // Clear existing content and returning to default state
+            carouselContent.innerHTML = "";
+            carouselContainer.scrollLeft = 0;
+            //hiding summary while loading new recommendations
+            summaryContainer.classList.remove('visible');
+    
+            // Show scroll buttons if there are movies
+            if (results.length > 0) {
+                if (scrollLeftButton) scrollLeftButton.style.display = 'block';
+                if (scrollRightButton) scrollRightButton.style.display = 'block';
+                
+                // Create and append movie cards
+                results.forEach((movie) => {
+                    const card = document.createElement("div");
+                    card.classList.add("result-card");
+                    
+                    card.innerHTML = `
+                        <img src="${movie.poster_url}" alt="${movie.title}">
+                    `;
+    
+                    card.addEventListener("click", () => {
+                        const formattedTitle = formatMovieTitle(movie.title);
+                        summaryContainer.classList.add('visible');
+                        summaryContainer.innerHTML = `
+                            <h2>${formattedTitle}</h2>
+                            <p>${movie.summary || "No summary available."}</p>
+                        `;
+                        
+                        document.querySelectorAll('.result-card').forEach(c => 
+                            c.style.transform = 'scale(1)');
+                        card.style.transform = 'scale(1.05)';
+                    });
+    
+                    carouselContent.appendChild(card);
+                });
+    
+                // Show the summary for the first movie after a short delay
+                setTimeout(() => {
+                    const formattedTitle = formatMovieTitle(results[0].title);
+                    summaryContainer.classList.add('visible');
+                    summaryContainer.innerHTML = `
+                        <h2>${formattedTitle}</h2>
+                        <p>${results[0].summary || "No summary available."}</p>
+                    `;
+                }, 100);
             }
-
-            // Populate the results
-            resultsContainer.innerHTML = ""; // Clear previous results
-            results.forEach((movie) => {
-                const resultCard = document.createElement("div");
-                resultCard.classList.add("result-card");
-				//ADDED
-                resultCard.innerHTML = `
-				    <img src="${movie.poster_url}" alt="${movie.title}" class="movie-poster">
-                    <p>${movie.title}</p>
-                `;
-                resultsContainer.appendChild(resultCard);
-            });
-
-            // Show the results container
-            resultsContainer.classList.remove("hidden");
+    
         } catch (error) {
             console.error("Error fetching movie results:", error);
-            alert("An error occurred while fetching movie results.");
+            summaryContainer.innerHTML = "<p>Error loading movie information.</p>";
         }
-    });
+    }
+
+    // Hide summary when typing in movie inputs
+   // const movieInputs = document.querySelectorAll("#your-movie-input, #their-movie-input");
+   // movieInputs.forEach(input => {
+   //     input.addEventListener("input", () => {
+   //         summaryContainer.classList.remove('visible');
+   //     });
+   // });
+
+    // Attach click handler to shuffle button
+   const shuffleButton = document.querySelector(".shuffle-button");
+   if (shuffleButton) {
+       shuffleButton.addEventListener("click", fetchResults);
+   } else {
+       console.error("Error: Shuffle button not found!");
+   }
 });
-
-
-
-
-
-

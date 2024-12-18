@@ -116,7 +116,7 @@ def normalize_title(title):
 
 def get_movie_poster_tmdb(title):
     """
-    Fetches the poster URL for a given movie title using TMDb API.
+    Fetches the poster URL and summary for a given movie title using TMDb API.
     """
     match = re.search(r"\((\d{4})\)$", title)
     year = match.group(1) if match else None
@@ -143,11 +143,17 @@ def get_movie_poster_tmdb(title):
         
         if response.status_code == 200 and data['results']:
             # Get the first result's poster path
-            poster_path = data['results'][0].get('poster_path')
-            if poster_path:
-                return f"https://image.tmdb.org/t/p/w500{poster_path}"  # Construct full poster URL
-    
-    return None  # No poster found
+            result = data['results'][0]
+            poster_path = result.get('poster_path')
+            summary = result.get('overview', 'No summary available.')
+            poster_url = (
+                f"https://image.tmdb.org/t/p/w500{poster_path}" 
+                if poster_path 
+                else None
+            )
+
+            return poster_url, summary
+    return None,'No summary available'  # No poster found
 
 # In[10]:
 
@@ -174,4 +180,3 @@ def display_movie_posters_tmdb(recommended_titles):
 # print("Top 5 Recommendations for Both Users:")
 # print(recommendations)
 # display_movie_posters_tmdb(recommendations)
-

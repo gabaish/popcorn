@@ -75,6 +75,15 @@ p {
     margin-top: 10px;
 }
 
+/*ADDED*/
+.movie-summary {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 10px;
+    line-height: 1.4;
+}
+
+
 .card-controls {
     display: flex;
     align-items: center;
@@ -173,20 +182,22 @@ p {
 
 /* Results section */
 .results-container {
-    display: flex; /* Use flexbox for horizontal layout */
-    flex-wrap: wrap; /* Allow wrapping to the next row if there's not enough space */
-    gap: 15px; /* Add spacing between items */
-    justify-content: center; /* Center items horizontally */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    background: #f9f9f9; /* Optional: Background color for the container */
-    border-radius: 10px; /* Optional: Rounded corners */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Optional: Subtle shadow */
-    width: 100%;
-    margin: 0 auto; /* Center the container on the page */
+    margin: 20px auto;
+    max-width: 800px;
+    min-height: 250px;
 }
 
 .result-item {
-    background: #ffffff; /* White background for each result */
+    background: #6D489B; /* White background for each result */
     border: 1px solid #ccc; /* Optional: Light border */
     border-radius: 5px; /* Rounded corners */
     padding: 10px 15px; /* Spacing inside each item */
@@ -215,22 +226,90 @@ p {
     gap: 10px;
 }
 
+.carousel-container {
+    overflow-x: hidden;
+    width: calc(100% - 80px); /* Account for scroll buttons */
+    scroll-behavior: smooth;
+    padding: 10px 0;
+}
+
+.carousel-container::-webkit-scrollbar {
+    display: flex;
+    gap: 20px; /* Consistent spacing between cards */
+    padding: 0 10px; /* Add some padding on the sides */
+}
+
+.carousel-content {
+    display: flex;
+    gap: 15px;
+    padding: 0 10px;
+    align-items: center; /* Center cards vertically */
+    justify-content: flex-start; /* Align cards from the start */
+}
+
 .result-card {
-    background: white;
-    color: black;
+    flex: 0 0 160; /* Fixed width for each card */
+    height: 240px; /* Fixed height for each card */
+    background: #6D489B; /* Make card background transparent to match container */
     border-radius: 10px;
     padding: 10px;
     text-align: center;
-    width: 150px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 160px;
+    max-width: 160px;
+    min-height: 240px;
+    max-height: 240px;
+    margin: 0 7.5px;
 }
 
 .result-card img {
-    width: 100%;
-    border-radius: 10px;
-    margin-bottom: 10px;
-
+    width: 160px; /* Fixed width for all posters */
+    height: 240px; /* Fixed height for all posters */
+    object-fit: cover; /* This ensures images maintain aspect ratio without distortion */
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
+
+.result-card p {
+    display: none;
+}
+.summary-container {
+    background: white;
+    color: #333;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 20px auto;
+    max-width: 800px;
+    min-height: 150px; /* Set minimum height */
+    height: 150px; /* Set fixed height */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    overflow-y: auto; /* Enable vertical scrolling if content is too long */
+    position: relative; /* For better scroll handling */
+    display: none; /* Hide by default */
+}
+
+.summary-container h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+    color: #6a0dad;
+    font-family: 'Poppins', sans-serif; /* Modern, bold font for titles */
+}
+.summary-container p {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.5;
+    font-family: 'Roboto', sans-serif; /* Clean, readable font for summary text */
+}
+
+.summary-container.visible {
+    display: block; /* Show when class is added */
+}
+
 #movie-input {
     padding: 10px;
     width: 100%;
@@ -272,4 +351,86 @@ p {
 /* Hidden class for dropdown */
 .hidden {
     display: none;
+}
+/* Cover Flow Section */
+.cover-flow-wrapper {
+    background: white; /* White background */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    margin: 30px auto;
+    padding: 20px 0;
+    max-width: 800px;
+    overflow: hidden; /* Hide overflowing content */
+}
+
+.cover-flow-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* Space between posters */
+    overflow-x: auto; /* Allow horizontal scrolling */
+    scroll-behavior: smooth;
+    padding: 10px;
+}
+
+.cover-flow-container::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for a clean look */
+}
+
+.cover-flow .poster {
+    flex: 0 0 auto; /* Prevent shrinking */
+    width: 10px;
+    height: 10px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cover-flow .poster img {
+    width: 100%; /* Fill the poster box */
+    height: auto;
+    border-radius: 8px; /* Rounded corners for consistency */
+    margin-bottom: 10px;
+}
+
+.cover-flow .poster p {
+    font-size: 0.9rem; /* Match result-card text size */
+    color: #333;
+    margin: 0;
+    line-height: 1.3;
+}
+
+.cover-flow .poster.active {
+    transform: scale(1.05); /* Slight zoom on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.cover-flow .poster:hover {
+    transform: scale(1.1); /* Slightly larger for active poster */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+.scroll-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #6a0dad;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+}
+#scroll-left {
+    left: 10px;
+}
+
+#scroll-right {
+    right: 10px;
 }

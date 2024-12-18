@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Recommender</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Poppins:wght@500;600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
@@ -51,10 +52,19 @@
                     <i class="fas fa-random"></i>
                 </button>
             </div>
-            <section id="results" class="results-container hidden">
-                <h2>Results</h2>
-                
-            </section>
+           <!-- Carousel Results Section (NEW) -->
+           <section id="results" class="results-container">
+            <button id="scroll-left" class="scroll-button">&lt;</button>
+            <div class="carousel-container">
+                <div class="carousel-content">
+                    <!-- Movie posters will be dynamically inserted here -->
+                </div>
+            </div>
+            <button id="scroll-right" class="scroll-button">&gt;</button>
+        </section>
+        <div id="movie-summary" class="summary-container">
+            <p>Summary will appear here when you click a poster.</p>
+        </div>
         </main>
     </div>
     <script src="{{ url_for('static', filename='script.js') }}"></script>

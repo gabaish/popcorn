@@ -54,15 +54,17 @@ def get_movie_results():
     
     #ADDED
     # Include posters for each recommendation
-    recommendations_with_posters = []
+    recommendations_with_posters_and_summary = []
     for movie in results:
-        poster_url = get_movie_poster_tmdb(movie)  # Fetch poster URL
-        recommendations_with_posters.append({
+        poster_url, summary = get_movie_poster_tmdb(movie)  # Fetch poster URL
+        recommendations_with_posters_and_summary.append({
             "title": movie,
-            "poster_url": poster_url if poster_url else "https://via.placeholder.com/500"
+            "poster_url": poster_url if poster_url else "https://via.placeholder.com/500",
+            "summary": summary if summary else "No summary available."
         })
+
     # Return the results as JSON
-    return jsonify(recommendations_with_posters)
+    return jsonify(recommendations_with_posters_and_summary)
 
 if __name__ == "__main__":
     app.run(debug=True)
