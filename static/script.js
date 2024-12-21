@@ -37,10 +37,41 @@ document.addEventListener("DOMContentLoaded", () => {
                     const listItem = document.createElement("li");
                     listItem.textContent = movie;
 
-                    listItem.addEventListener("click", () => {
-                        movieInput.value = movie;
-                        moviePlaceholder.textContent = movie;
-                        suggestionsList.classList.add("hidden");
+                    listItem.addEventListener("click", async () => {
+                        try {
+                            movieInput.value = movie;
+                            moviePlaceholder.textContent = movie;
+                            suggestionsList.classList.add("hidden");
+                    
+                            // Fetch the movie poster URL
+                            const response = await fetch(`/get_movie_poster?title=${encodeURIComponent(movie)}`);
+                            if (!response.ok) {
+                                throw new Error('Failed to fetch movie poster');
+                            }
+                            const data = await response.json();
+                            if (data.error) {
+                                throw new Error(data.error);
+                            }
+                    
+                            // Add or update the movie image
+                            const pickCard = movieInput.closest('.pick-card');
+                            const movieImage = pickCard.querySelector('.movie-image');
+                            if (movieImage) {
+                                movieImage.src = data.poster_url;
+                                movieImage.alt = movie;
+                                movieImage.style.display = 'block'; // Make the image visible
+                            } else {
+                                const img = document.createElement('img');
+                                img.src = data.poster_url;
+                                img.alt = movie;
+                                img.classList.add('movie-image');
+                                img.style.display = 'block'; // Ensure the new image is visible
+                                pickCard.appendChild(img);
+                            }
+                        } catch (error) {
+                            console.error('Error fetching movie poster:', error);
+                            alert('Could not fetch the movie poster. Please try again.');
+                        }
                     });
 
                     suggestionsList.appendChild(listItem);
@@ -106,11 +137,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Update the placeholder text
                 placeholder.textContent = data.movie;
                 
-                // Clear the input field in this pick-card
+                // update the input field in this pick-card
                 const input = pickCard.querySelector('input[type="text"]');
                 if (input) {
-                    input.value = '';
+                    input.value = data.movie;
                 }
+
+                // Add or update the movie image
+                const movieImage = pickCard.querySelector('.movie-image');
+                movieImage.src = data.poster_url[0];
+                movieImage.alt = data.movie;
+                movieImage.style.display = 'block'; 
 
                 // Hide summary when using dice
                 //summaryContainer.classList.remove('visible');

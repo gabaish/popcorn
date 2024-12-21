@@ -35,8 +35,9 @@ def recommend():
 # route for generating a random movie selection
 @app.route('/random_movie', methods=['GET'])
 def random_movie():
-    random_movie = df.sample(n=1).iloc[0]['title']  # Assuming the column is named 'title'
-    return jsonify({'movie': random_movie})
+    random_movie = df.sample(n=1).iloc[0]['title']  # column is named 'title'
+    random_movie_url = get_movie_poster_tmdb(random_movie);
+    return jsonify({'movie': random_movie,'poster_url':random_movie_url})
 
 # route for getting recommandations from logic file
 @app.route('/get_movie_results', methods=['POST'])
@@ -66,5 +67,19 @@ def get_movie_results():
     # Return the results as JSON
     return jsonify(recommendations_with_posters_and_summary)
 
+@app.route('/get_movie_poster', methods=['GET'])
+def get_movie_poster():
+    movie_name = request.args.get('title')
+    if not movie_name:
+        return jsonify({'error': 'Movie title is required'}), 400
+    
+    try:
+        poster_url = get_movie_poster_tmdb(movie_name)
+        if not poster_url:
+            return jsonify({'error': 'Poster not found'}), 404
+        return jsonify({'poster_url': poster_url})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
 if __name__ == "__main__":
     app.run(debug=True)

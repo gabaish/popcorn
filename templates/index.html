@@ -20,7 +20,9 @@
                 <div class="pick-card">
                     <div class="movie-placeholder">
                         <p id="your-placeholder">Your Pick</p>
-                        <i class="fas fa-film"></i>
+                        <div class="movie-image-container">
+                            <img class="movie-image" style="display: none;"/>
+                        </div>
                     </div>
                     <div class="card-controls">
                         <input type="text" id="your-movie-input" placeholder="Type a movie name" autocomplete="off">
@@ -29,6 +31,7 @@
                             <i class="fas fa-dice"></i>
                         </button>
                     </div>
+                    
                 </div>                
                 <div class="icon">
                     <img src="{{ url_for('static', filename='popcorn.png') }}" alt="Popcorn">
@@ -36,7 +39,9 @@
                 <div class="pick-card">
                     <div class="movie-placeholder">
                         <p id="their-placeholder">Their Pick</p>
-                        <i class="fas fa-film"></i>
+                        <div class="movie-image-container">
+                            <img class="movie-image" style="display: none;"/>
+                        </div>
                     </div>
                     <div class="card-controls">
                         <input type="text" id="their-movie-input" placeholder="Type a movie name" autocomplete="off">
@@ -45,6 +50,7 @@
                             <i class="fas fa-dice"></i>
                         </button>
                     </div>
+                    
                 </div>   
                 
             </div>
