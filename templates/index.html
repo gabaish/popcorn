@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie Recommender</title>
+    <title>Popcorn</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Poppins:wght@500;600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M15 35 L25 95 L75 95 L85 35 Z' fill='%23EF4444' stroke='%23991B1B' stroke-width='3'/><path d='M30 35 L35 95 M50 35 L50 95 M70 35 L65 95' stroke='white' stroke-width='5'/><circle cx='30' cy='30' r='15' fill='%23FDE68A' stroke='%23F59E0B' stroke-width='3'/><circle cx='50' cy='25' r='15' fill='%23FDE68A' stroke='%23F59E0B' stroke-width='3'/><circle cx='70' cy='30' r='15' fill='%23FDE68A' stroke='%23F59E0B' stroke-width='3'/><circle cx='40' cy='35' r='15' fill='%23FDE68A' stroke='%23F59E0B' stroke-width='3'/><circle cx='60' cy='35' r='15' fill='%23FDE68A' stroke='%23F59E0B' stroke-width='3'/></svg>">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
@@ -54,13 +55,13 @@
             </div>
            <!-- Carousel Results Section (NEW) -->
            <section id="results" class="results-container">
-            <button id="scroll-left" class="scroll-button">&lt;</button>
+            <button id="scroll-left" class="scroll-button" aria-label="Scroll left"><i class="fas fa-chevron-left"></i></button>
             <div class="carousel-container">
                 <div class="carousel-content">
                     <!-- Movie posters will be dynamically inserted here -->
                 </div>
             </div>
-            <button id="scroll-right" class="scroll-button">&gt;</button>
+            <button id="scroll-right" class="scroll-button" aria-label="Scroll right"><i class="fas fa-chevron-right"></i></button>
         </section>
         <div id="movie-summary" class="summary-container">
             <p>Summary will appear here when you click a poster.</p>

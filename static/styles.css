@@ -7,6 +7,9 @@ body {
     background-size: cover;
     color: white;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
 }
 
 h1 {
@@ -21,16 +24,24 @@ p {
 /* Layout */
 .container {
     max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
+    width: 100%;
+    padding: 20px; /* Add horizontal padding to align with pick boxes */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-
+header {
+    width: 100%;
+    margin-bottom: 20px;
+}
 /* Picks section */
 .picks-container {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
-    margin: 20px 0;
+    margin: 20px auto;
+    gap: 20px;
+    width: 100%;
 }
 
 .pick-card {
@@ -46,7 +57,9 @@ p {
     flex-direction: column;
     align-items: center;
     gap: 15px;
+    max-width: none;
 }
+
 
 
 .movie-placeholder {
@@ -139,10 +152,9 @@ p {
 }
 
 .icon img {
-    width: 250px; /* Set the width */
-    height: 250px; /* Set the height */
-    object-fit: cover; /* Ensure the image fits inside the 100px cube */
-    margin-left: 20px;
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
 }
 
 /* Shuffle section */
@@ -183,16 +195,16 @@ p {
 /* Results section */
 .results-container {
     position: relative;
-    display: flex;
+    display: none; /*to not present the posters container by default*/
     align-items: center;
     justify-content: center;
     gap: 10px;
-    background: white;
+    background: transparent;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    
+    padding: 20px 0;
     margin: 20px auto;
-    max-width: 800px;
+    max-width: 700px;
     min-height: 250px;
 }
 
@@ -230,7 +242,7 @@ p {
     overflow-x: hidden;
     width: calc(100% - 80px); /* Account for scroll buttons */
     scroll-behavior: smooth;
-    padding: 10px 0;
+    
 }
 
 .carousel-container::-webkit-scrollbar {
@@ -250,7 +262,7 @@ p {
 .result-card {
     flex: 0 0 160; /* Fixed width for each card */
     height: 240px; /* Fixed height for each card */
-    background: #6D489B; /* Make card background transparent to match container */
+    background: transparent; /* Make card background transparent to match container */
     border-radius: 10px;
     padding: 10px;
     text-align: center;
@@ -276,33 +288,53 @@ p {
 .result-card p {
     display: none;
 }
-.summary-container {
-    background: white;
+
+.result-card .movie-title {
+    width: 160px;
+    height: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
     color: #333;
-    border-radius: 10px;
-    padding: 15px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+.summary-container {
+    background: rgba(255, 255, 255, 0.8);
+    color: #333;
+    border-radius: 8px;
+    padding: 20px;
     margin: 20px auto;
-    max-width: 800px;
+    width: 100%;
+    max-width: 700px;
     min-height: 150px; /* Set minimum height */
     height: 150px; /* Set fixed height */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     text-align: left;
     overflow-y: auto; /* Enable vertical scrolling if content is too long */
     position: relative; /* For better scroll handling */
     display: none; /* Hide by default */
+    backdrop-filter: blur(5px);
 }
 
 .summary-container h2 {
     margin-top: 0;
     margin-bottom: 10px;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     color: #6a0dad;
     font-family: 'Poppins', sans-serif; /* Modern, bold font for titles */
 }
 .summary-container p {
     margin: 0;
-    font-size: 1rem;
-    line-height: 1.5;
+    font-size: 1.1rem;
+    line-height: 1.6;
     font-family: 'Roboto', sans-serif; /* Clean, readable font for summary text */
 }
 
@@ -415,22 +447,29 @@ p {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: #6a0dad;
-    color: white;
+    background: #f3a6d4; /*same color as the shuffle button*/
+    color: #6a0dad;
     border: none;
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     z-index: 10;
+    font-size: 1.5rem;
+    transition: background-color 0.3s, transform 0.3s;
 }
 #scroll-left {
-    left: 10px;
+    left: 0;
 }
 
 #scroll-right {
-    right: 10px;
+    right: 0;
+}
+
+.scroll-button:hover {
+    background-color: #ffc0cb; /* Lighter pink on hover */
+    transform: translateY(-50%) scale(1.1);
 }

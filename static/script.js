@@ -156,6 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
             
+           
             //fetching the returned 5 recommended movies with posters and summaries
             const response = await fetch("/get_movie_results", {
                 method: "POST",
@@ -165,25 +166,34 @@ document.addEventListener("DOMContentLoaded", () => {
     
             const results = await response.json();
     
-            // Clear existing content and returning to default state
-            carouselContent.innerHTML = "";
-            carouselContainer.scrollLeft = 0;
-            //hiding summary while loading new recommendations
-            summaryContainer.classList.remove('visible');
+             // Clear existing content and returning to default state
+             carouselContent.innerHTML = "";
+             carouselContainer.scrollLeft = 0;
+             //hiding summary while loading new recommendations
+             summaryContainer.classList.remove('visible');
     
+             showResultsContainer();
+
             // Show scroll buttons if there are movies
             if (results.length > 0) {
-                if (scrollLeftButton) scrollLeftButton.style.display = 'block';
-                if (scrollRightButton) scrollRightButton.style.display = 'block';
+                //if (scrollLeftButton) scrollLeftButton.style.display = 'block';
+                //if (scrollRightButton) scrollRightButton.style.display = 'block';
                 
                 // Create and append movie cards
                 results.forEach((movie) => {
                     const card = document.createElement("div");
                     card.classList.add("result-card");
                     
-                    card.innerHTML = `
-                        <img src="${movie.poster_url}" alt="${movie.title}">
-                    `;
+
+                    if (movie.poster_url && !movie.poster_url.includes("placeholder")) {
+                        card.innerHTML = `<img src="${movie.poster_url}" alt="${movie.title}">`;
+                    } else {
+                        card.innerHTML = `<div class="movie-title">${movie.title}</div>`;
+                    }
+
+                    //card.innerHTML = `
+                    //    <img src="${movie.poster_url}" alt="${movie.title}">
+                    //`;
     
                     card.addEventListener("click", () => {
                         const formattedTitle = formatMovieTitle(movie.title);
@@ -225,12 +235,30 @@ document.addEventListener("DOMContentLoaded", () => {
    //         summaryContainer.classList.remove('visible');
    //     });
    // });
+    
+   function showResultsContainer() {
+    const resultsContainer = document.querySelector('.results-container');
+    if (resultsContainer) {
+        resultsContainer.style.display = 'flex';
+    }
+    if (scrollLeftButton) scrollLeftButton.style.display = 'block';
+    if (scrollRightButton) scrollRightButton.style.display = 'block';
+}
 
-    // Attach click handler to shuffle button
-   const shuffleButton = document.querySelector(".shuffle-button");
-   if (shuffleButton) {
-       shuffleButton.addEventListener("click", fetchResults);
-   } else {
-       console.error("Error: Shuffle button not found!");
-   }
+function hideResultsContainer() {
+    const resultsContainer = document.querySelector('.results-container');
+    if (resultsContainer) {
+        resultsContainer.style.display = 'none';
+    }
+    if (scrollLeftButton) scrollLeftButton.style.display = 'none';
+    if (scrollRightButton) scrollRightButton.style.display = 'none';
+}
+
+// Attach click handler to shuffle button
+const shuffleButton = document.querySelector(".shuffle-button");
+if (shuffleButton) {
+    shuffleButton.addEventListener("click", fetchResults);
+} else {
+    console.error("Error: Shuffle button not found!");
+}
 });
