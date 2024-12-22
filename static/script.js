@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     listItem.addEventListener("click", async () => {
                         try {
                             movieInput.value = movie;
-                            moviePlaceholder.textContent = movie;
+                            moviePlaceholder.textContent = "";
                             suggestionsList.classList.add("hidden");
                     
                             // Fetch the movie poster URL
@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 
                 // Update the placeholder text
-                placeholder.textContent = data.movie;
+                placeholder.textContent = "";
                 
                 // update the input field in this pick-card
                 const input = pickCard.querySelector('input[type="text"]');
@@ -160,10 +160,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Set up carousel and movie summary functionality
     const carouselContainer = document.querySelector(".carousel-container");
+    const resultsContainer = document.querySelector(".results-container");
     const summaryContainer = document.getElementById("movie-summary");
     const carouselContent = document.querySelector(".carousel-content");
     const scrollLeftButton = document.getElementById("scroll-left");
     const scrollRightButton = document.getElementById("scroll-right");
+    const loadingIndicator = document.querySelector(".loading-indicator");
 
     // Add scroll button functionality
     if (scrollLeftButton && scrollRightButton) {
@@ -185,15 +187,19 @@ document.addEventListener("DOMContentLoaded", () => {
     async function fetchResults() {
         try {
             //the selected movies by the users
-            const movie1 = document.getElementById("your-placeholder").textContent;
-            const movie2 = document.getElementById("their-placeholder").textContent;
+            const movie1 = document.getElementById("your-movie-input").value;
+            const movie2 = document.getElementById("their-movie-input").value;
     
             if (movie1 === "Your Pick" || movie2 === "Their Pick") {
                 alert("Please select both movies first!");
                 return;
             }
             
-           
+            resultsContainer.style.display = "flex";
+            loadingIndicator.style.display = "block";
+            carouselContent.style.display = "none";
+            summaryContainer.classList.remove('visible');
+
             //fetching the returned 5 recommended movies with posters and summaries
             const response = await fetch("/get_movie_results", {
                 method: "POST",
@@ -207,9 +213,9 @@ document.addEventListener("DOMContentLoaded", () => {
              carouselContent.innerHTML = "";
              carouselContainer.scrollLeft = 0;
              //hiding summary while loading new recommendations
-             summaryContainer.classList.remove('visible');
+             //summaryContainer.classList.remove('visible');
     
-             showResultsContainer();
+             //showResultsContainer();
 
             // Show scroll buttons if there are movies
             if (results.length > 0) {
@@ -258,6 +264,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     `;
                 }, 100);
             }
+
+            showResultsContainer();
     
         } catch (error) {
             console.error("Error fetching movie results:", error);
@@ -274,6 +282,9 @@ document.addEventListener("DOMContentLoaded", () => {
    // });
     
    function showResultsContainer() {
+    loadingIndicator.style.display = "none";
+    carouselContent.style.display = "flex";
+    summaryContainer.classList.add('visible');
     const resultsContainer = document.querySelector('.results-container');
     if (resultsContainer) {
         resultsContainer.style.display = 'flex';
