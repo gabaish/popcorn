@@ -15,7 +15,7 @@ TMDB_BASE_URL = 'https://api.themoviedb.org/3'
 
 # In[2]:
 
-movies2 = pd.read_csv('data/movies2.csv')
+movies2 = pd.read_csv('data/movies3.csv')
 ratings = pd.read_csv('data/ratings.csv')
 
 

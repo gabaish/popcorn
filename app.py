@@ -5,7 +5,7 @@ import pandas as pd
 app = Flask(__name__)
 
 # Load your dataset and model
-df = pd.read_csv("data/movies2.csv")
+df = pd.read_csv("data/movies3.csv")
 
 # Define your recommendation logic
 def recommend_movies(user_input):
