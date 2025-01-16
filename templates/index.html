@@ -61,18 +61,32 @@
             </div>
            <!-- Carousel Results Section (NEW) -->
            <section id="results" class="results-container">
-            <button id="scroll-left" class="scroll-button" aria-label="Scroll left"><i class="fas fa-chevron-left"></i></button>
-            <div class="carousel-container">
-                <div class="loading-indicator"></div>
-                <div class="carousel-content">
-                    <!-- Movie posters will be dynamically inserted here -->
+            <div>
+                <h2>KNN Recommendations</h2>
+                <div class="recommendations-cont">
+                    <button id="knn-scroll-left" class="scroll-button" aria-label="Scroll left"><i class="fas fa-chevron-left"></i></button>
+                    <div id="knn-results" class="carousel-container">
+                        <div class="loading-indicator"></div>
+                        <div class="carousel-content"></div>
+                    </div>
+                    <button id="knn-scroll-right" class="scroll-button" aria-label="Scroll right"><i class="fas fa-chevron-right"></i></button>
                 </div>
             </div>
-            <button id="scroll-right" class="scroll-button" aria-label="Scroll right"><i class="fas fa-chevron-right"></i></button>
-        </section>
-        <div id="movie-summary" class="summary-container">
-            <p>Summary will appear here when you click a poster.</p>
-        </div>
+            <div>
+                <h2>SVD Recommendations</h2>
+                <div class="recommendations-cont">
+                    <button id="svd-scroll-left" class="scroll-button" aria-label="Scroll left"><i class="fas fa-chevron-left"></i></button>
+                    <div id="svd-results" class="carousel-container">
+                        <div class="loading-indicator"></div>
+                        <div class="carousel-content"></div>
+                    </div>
+                    <button id="svd-scroll-right" class="scroll-button" aria-label="Scroll right"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+            </section>
+            <div id="movie-summary" class="summary-container">
+                <p>Summary will appear here when you click a poster.</p>
+            </div>
         </main>
     </div>
     <script src="{{ url_for('static', filename='script.js') }}"></script>

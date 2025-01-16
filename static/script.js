@@ -159,127 +159,208 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Set up carousel and movie summary functionality
-    const carouselContainer = document.querySelector(".carousel-container");
+    // const carouselContainer = document.querySelector(".carousel-container");
+    const knnCarouselContainer = document.getElementById("knn-results");
+    const svdCarouselContainer = document.getElementById("svd-results");
     const resultsContainer = document.querySelector(".results-container");
     const summaryContainer = document.getElementById("movie-summary");
     const carouselContent = document.querySelector(".carousel-content");
-    const scrollLeftButton = document.getElementById("scroll-left");
-    const scrollRightButton = document.getElementById("scroll-right");
+    const knnScrollLeftButton = document.getElementById("knn-scroll-left");
+    const knnScrollRightButton = document.getElementById("knn-scroll-right");
+    const svdScrollLeftButton = document.getElementById("svd-scroll-left");
+    const svdScrollRightButton = document.getElementById("svd-scroll-right");
     const loadingIndicator = document.querySelector(".loading-indicator");
 
-    // Add scroll button functionality
-    if (scrollLeftButton && scrollRightButton) {
-        scrollLeftButton.addEventListener("click", () => {
-            carouselContainer.scrollBy({
+    // Add scroll button functionality for knn
+    if (knnScrollLeftButton && knnScrollRightButton) {
+        knnScrollLeftButton.addEventListener("click", () => {
+            knnCarouselContainer.scrollBy({
                 left: -200,
                 behavior: "smooth"
             });
         });
 
-        scrollRightButton.addEventListener("click", () => {
-            carouselContainer.scrollBy({
+        knnScrollRightButton.addEventListener("click", () => {
+            knnCarouselContainer.scrollBy({
                 left: 200,
                 behavior: "smooth"
             });
         });
     }
 
+    // Add scroll button functionality for svd
+    if (svdScrollLeftButton && svdScrollRightButton) {
+        svdScrollLeftButton.addEventListener("click", () => {
+            svdCarouselContainer.scrollBy({
+                left: -200,
+                behavior: "smooth"
+            });
+        });
+
+        svdScrollRightButton.addEventListener("click", () => {
+            svdCarouselContainer.scrollBy({
+                left: 200,
+                behavior: "smooth"
+            });
+        });
+    }
+
+    // async function fetchResults() {
+    //     try {
+    //         //the selected movies by the users
+    //         const movie1 = document.getElementById("your-movie-input").value;
+    //         const movie2 = document.getElementById("their-movie-input").value;
+    
+    //         if (movie1 === "Your Pick" || movie2 === "Their Pick") {
+    //             alert("Please select both movies first!");
+    //             return;
+    //         }
+            
+    //         resultsContainer.style.display = "flex";
+    //         loadingIndicator.style.display = "block";
+    //         carouselContent.style.display = "none";
+    //         summaryContainer.classList.remove('visible');
+
+    //         //fetching the returned 5 recommended movies with posters and summaries
+    //         const response = await fetch("/get_movie_results", {
+    //             method: "POST",
+    //             headers: { "Content-Type": "application/json" },
+    //             body: JSON.stringify({ movie1, movie2 }),
+    //         });
+    
+    //         const results = await response.json();
+    
+    //          // Clear existing content and returning to default state
+    //          carouselContent.innerHTML = "";
+    //          carouselContainer.scrollLeft = 0;
+    //          //hiding summary while loading new recommendations
+    //          //summaryContainer.classList.remove('visible');
+    
+    //          //showResultsContainer();
+
+    //         // Show scroll buttons if there are movies
+    //         if (results.length > 0) {
+    //             //if (scrollLeftButton) scrollLeftButton.style.display = 'block';
+    //             //if (scrollRightButton) scrollRightButton.style.display = 'block';
+                
+    //             // Create and append movie cards
+    //             results.forEach((movie) => {
+    //                 const card = document.createElement("div");
+    //                 card.classList.add("result-card");
+                    
+
+    //                 if (movie.poster_url && !movie.poster_url.includes("placeholder")) {
+    //                     card.innerHTML = `<img src="${movie.poster_url}" alt="${movie.title}">`;
+    //                 } else {
+    //                     card.innerHTML = `<div class="movie-title">${movie.title}</div>`;
+    //                 }
+
+    //                 //card.innerHTML = `
+    //                 //    <img src="${movie.poster_url}" alt="${movie.title}">
+    //                 //`;
+    
+    //                 card.addEventListener("click", () => {
+    //                     const formattedTitle = formatMovieTitle(movie.title);
+    //                     summaryContainer.classList.add('visible');
+    //                     summaryContainer.innerHTML = `
+    //                         <h2>${formattedTitle}</h2>
+    //                         <p>${movie.summary || "No summary available."}</p>
+    //                     `;
+                        
+    //                     document.querySelectorAll('.result-card').forEach(c => 
+    //                         c.style.transform = 'scale(1)');
+    //                     card.style.transform = 'scale(1.05)';
+    //                 });
+    
+    //                 carouselContent.appendChild(card);
+    //             });
+    
+    //             // Show the summary for the first movie after a short delay
+    //             setTimeout(() => {
+    //                 const formattedTitle = formatMovieTitle(results[0].title);
+    //                 summaryContainer.classList.add('visible');
+    //                 summaryContainer.innerHTML = `
+    //                     <h2>${formattedTitle}</h2>
+    //                     <p>${results[0].summary || "No summary available."}</p>
+    //                 `;
+    //             }, 100);
+    //         }
+
+    //         showResultsContainer();
+    
+    //     } catch (error) {
+    //         console.error("Error fetching movie results:", error);
+    //         summaryContainer.innerHTML = "<p>Error loading movie information.</p>";
+    //     }
+    // }
+
     async function fetchResults() {
         try {
-            //the selected movies by the users
             const movie1 = document.getElementById("your-movie-input").value;
             const movie2 = document.getElementById("their-movie-input").value;
     
-            if (movie1 === "Your Pick" || movie2 === "Their Pick") {
+            if (!movie1 || !movie2) {
                 alert("Please select both movies first!");
                 return;
             }
-            
-            resultsContainer.style.display = "flex";
+    
+            // const resultsContainer = document.getElementById("results");
+            resultsContainer.style.display = "felx";
             loadingIndicator.style.display = "block";
             carouselContent.style.display = "none";
             summaryContainer.classList.remove('visible');
+    
+            const knnContainer = document.getElementById("knn-results");
+            const svdContainer = document.getElementById("svd-results");
 
-            //fetching the returned 5 recommended movies with posters and summaries
+            console.log("got the containers");
+    
+            knnContainer.innerHTML = "";
+            svdContainer.innerHTML = "";
+    
             const response = await fetch("/get_movie_results", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ movie1, movie2 }),
             });
     
-            const results = await response.json();
-    
-             // Clear existing content and returning to default state
-             carouselContent.innerHTML = "";
-             carouselContainer.scrollLeft = 0;
-             //hiding summary while loading new recommendations
-             //summaryContainer.classList.remove('visible');
-    
-             //showResultsContainer();
+            const data = await response.json();
 
-            // Show scroll buttons if there are movies
-            if (results.length > 0) {
-                //if (scrollLeftButton) scrollLeftButton.style.display = 'block';
-                //if (scrollRightButton) scrollRightButton.style.display = 'block';
-                
-                // Create and append movie cards
-                results.forEach((movie) => {
-                    const card = document.createElement("div");
-                    card.classList.add("result-card");
-                    
-
-                    if (movie.poster_url && !movie.poster_url.includes("placeholder")) {
-                        card.innerHTML = `<img src="${movie.poster_url}" alt="${movie.title}">`;
-                    } else {
-                        card.innerHTML = `<div class="movie-title">${movie.title}</div>`;
-                    }
-
-                    //card.innerHTML = `
-                    //    <img src="${movie.poster_url}" alt="${movie.title}">
-                    //`;
+            console.log("got the data: " , data );
     
-                    card.addEventListener("click", () => {
-                        const formattedTitle = formatMovieTitle(movie.title);
-                        summaryContainer.classList.add('visible');
-                        summaryContainer.innerHTML = `
-                            <h2>${formattedTitle}</h2>
-                            <p>${movie.summary || "No summary available."}</p>
-                        `;
-                        
-                        document.querySelectorAll('.result-card').forEach(c => 
-                            c.style.transform = 'scale(1)');
-                        card.style.transform = 'scale(1.05)';
-                    });
+            // Populate KNN results
+            data.knn.forEach((movie) => {
+                const card = createMovieCard(movie);
+                knnContainer.appendChild(card);
+            });
     
-                    carouselContent.appendChild(card);
-                });
-    
-                // Show the summary for the first movie after a short delay
-                setTimeout(() => {
-                    const formattedTitle = formatMovieTitle(results[0].title);
-                    summaryContainer.classList.add('visible');
-                    summaryContainer.innerHTML = `
-                        <h2>${formattedTitle}</h2>
-                        <p>${results[0].summary || "No summary available."}</p>
-                    `;
-                }, 100);
-            }
-
-            showResultsContainer();
-    
+            // Populate SVD results
+            data.svd.forEach((movie) => {
+                const card = createMovieCard(movie);
+                svdContainer.appendChild(card);
+            });
         } catch (error) {
-            console.error("Error fetching movie results:", error);
-            summaryContainer.innerHTML = "<p>Error loading movie information.</p>";
+            console.error("Error fetching results:", error);
         }
     }
+    
+    function createMovieCard(movie) {
+        const card = document.createElement("div");
+        card.classList.add("result-card");
+    
+        card.innerHTML = movie.poster_url
+            ? `<img src="${movie.poster_url}" alt="${movie.title}">`
+            : `<div class="movie-title">${movie.title}</div>`;
+    
+        card.addEventListener("click", () => {
+            const summaryContainer = document.getElementById("movie-summary");
+            summaryContainer.innerHTML = `<h2>${movie.title}</h2><p>${movie.summary}</p>`;
+            summaryContainer.style.display = "block";
+        });
+    
+        return card;
+    }
 
-    // Hide summary when typing in movie inputs
-   // const movieInputs = document.querySelectorAll("#your-movie-input, #their-movie-input");
-   // movieInputs.forEach(input => {
-   //     input.addEventListener("input", () => {
-   //         summaryContainer.classList.remove('visible');
-   //     });
-   // });
     
    function showResultsContainer() {
     loadingIndicator.style.display = "none";

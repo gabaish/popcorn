@@ -220,15 +220,15 @@ def recommend_for_multiple_movies(movie_list, n_recommendations=5):
 # recommendations = recommend_for_multiple_users_svd(movie_list)
 
 # Test with input sets
-input_sets = {
-    "2_movies": ["The Princess Diaries (2001)", "Hannah Montana: The Movie (2009)"],
-    "5_movies": ["Fight Club (1999)", "The Princess Diaries (2001)", "Hannah Montana: The Movie (2009)", "The Other Woman (2014)", "Just Friends (2005)"],
-    "10_movies": ["The Princess Diaries (2001)", "Hannah Montana: The Movie (2009)", "The Other Woman (2014)", "Just Friends (2005)", "Fight Club (1999)", 
-                  "Titanic (1997)", "Friends with Benefits (2011)", "The Pink Panther (2006)", "The Addams Family (1991)", "Father of the Bride (1950)"]
-}
+# input_sets = {
+#     "2_movies": ["The Princess Diaries (2001)", "Hannah Montana: The Movie (2009)"],
+#     "5_movies": ["Fight Club (1999)", "The Princess Diaries (2001)", "Hannah Montana: The Movie (2009)", "The Other Woman (2014)", "Just Friends (2005)"],
+#     "10_movies": ["The Princess Diaries (2001)", "Hannah Montana: The Movie (2009)", "The Other Woman (2014)", "Just Friends (2005)", "Fight Club (1999)", 
+#                   "Titanic (1997)", "Friends with Benefits (2011)", "The Pink Panther (2006)", "The Addams Family (1991)", "Father of the Bride (1950)"]
+# }
 
-for test_name, movies in input_sets.items():
-    print(f"\nResults for {test_name}:")
-    recommendations = recommend_for_multiple_movies(movies)
-    for movie in recommendations:
-        print(f"- {movie}")
+# for test_name, movies in input_sets.items():
+#     print(f"\nResults for {test_name}:")
+#     recommendations = recommend_for_multiple_movies(movies)
+#     for movie in recommendations:
+#         print(f"- {movie}")

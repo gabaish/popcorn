@@ -40,7 +40,34 @@ def random_movie():
     random_movie_url = get_movie_poster_tmdb(random_movie);
     return jsonify({'movie': random_movie,'poster_url':random_movie_url})
 
-# route for getting recommandations from logic file
+# # route for getting recommandations from logic file
+# @app.route('/get_movie_results', methods=['POST'])
+# def get_movie_results():
+#     data = request.json  # Expect JSON input
+#     movie1 = data.get("movie1")
+#     movie2 = data.get("movie2")
+    
+#     if not movie1 or not movie2:
+#         return jsonify({"error": "Both movies are required"}), 400
+
+#     # Call the Python function
+#     results = recommend_for_two_users_with_five_results_svd(movie1, movie2)
+#     print(results)
+    
+#     #ADDED
+#     # Include posters for each recommendation
+#     recommendations_with_posters_and_summary = []
+#     for movie in results:
+#         poster_url, summary = get_movie_poster_tmdb(movie)  # Fetch poster URL
+#         recommendations_with_posters_and_summary.append({
+#             "title": movie,
+#             "poster_url": poster_url if poster_url else "https://via.placeholder.com/500",
+#             "summary": summary if summary else "No summary available."
+#         })
+
+#     # Return the results as JSON
+#     return jsonify(recommendations_with_posters_and_summary)
+
 @app.route('/get_movie_results', methods=['POST'])
 def get_movie_results():
     data = request.json  # Expect JSON input
@@ -50,23 +77,34 @@ def get_movie_results():
     if not movie1 or not movie2:
         return jsonify({"error": "Both movies are required"}), 400
 
-    # Call the Python function
-    results = recommend_for_two_users_with_five_results_svd(movie1, movie2)
-    print(results)
-    
-    #ADDED
-    # Include posters for each recommendation
-    recommendations_with_posters_and_summary = []
-    for movie in results:
-        poster_url, summary = get_movie_poster_tmdb(movie)  # Fetch poster URL
-        recommendations_with_posters_and_summary.append({
+    # Fetch results from both models
+    knn_results = recommend_for_two_users_with_five_results(movie1, movie2)
+    svd_results = recommend_for_two_users_with_five_results_svd(movie1, movie2)
+
+    # Add posters and summaries for KNN results
+    knn_recommendations = []
+    for movie in knn_results:
+        poster_url, summary = get_movie_poster_tmdb(movie)
+        knn_recommendations.append({
             "title": movie,
             "poster_url": poster_url if poster_url else "https://via.placeholder.com/500",
             "summary": summary if summary else "No summary available."
         })
 
-    # Return the results as JSON
-    return jsonify(recommendations_with_posters_and_summary)
+    # Add posters and summaries for SVD results
+    svd_recommendations = []
+    for movie in svd_results:
+        poster_url, summary = get_movie_poster_tmdb(movie)
+        svd_recommendations.append({
+            "title": movie,
+            "poster_url": poster_url if poster_url else "https://via.placeholder.com/500",
+            "summary": summary if summary else "No summary available."
+        })
+
+    return jsonify({
+        "knn": knn_recommendations,
+        "svd": svd_recommendations
+    })
 
 @app.route('/get_movie_poster', methods=['GET'])
 def get_movie_poster():
