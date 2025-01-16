@@ -13,11 +13,13 @@ body {
 }
 
 h1 {
+    font-family: 'Poppins', sans-serif;
     font-size: 3rem;
     margin: 20px 0 10px;
 }
 
 p {
+    font-family: 'Poppins', sans-serif;
     font-size: 1.2rem;
 }
 

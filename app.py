@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 from logic import recommend_for_two_users_with_five_results, get_movie_poster_tmdb
+from logic_svd import recommend_for_two_users_with_five_results_svd
 import pandas as pd
 
 app = Flask(__name__)
@@ -50,7 +51,7 @@ def get_movie_results():
         return jsonify({"error": "Both movies are required"}), 400
 
     # Call the Python function
-    results = recommend_for_two_users_with_five_results(movie1, movie2)
+    results = recommend_for_two_users_with_five_results_svd(movie1, movie2)
     print(results)
     
     #ADDED
