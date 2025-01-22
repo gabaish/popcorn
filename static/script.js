@@ -171,6 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const svdScrollRightButton = document.getElementById("svd-scroll-right");
     const loadingIndicator = document.querySelector(".loading-indicator");
 
+
     // Add scroll button functionality for knn
     if (knnScrollLeftButton && knnScrollRightButton) {
         knnScrollLeftButton.addEventListener("click", () => {
@@ -303,13 +304,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 alert("Please select both movies first!");
                 return;
             }
-    
+
             // const resultsContainer = document.getElementById("results");
-            resultsContainer.style.display = "felx";
+            resultsContainer.style.display = "none";
             loadingIndicator.style.display = "block";
             carouselContent.style.display = "none";
             summaryContainer.classList.remove('visible');
-    
+            summaryContainer.style.display = "none";
+
             const knnContainer = document.getElementById("knn-results");
             const svdContainer = document.getElementById("svd-results");
 
@@ -317,6 +319,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
             knnContainer.innerHTML = "";
             svdContainer.innerHTML = "";
+            summaryContainer.innerHTML = `<p>Summary will appear here when you click a poster.</p>`;
     
             const response = await fetch("/get_movie_results", {
                 method: "POST",
@@ -339,6 +342,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 const card = createMovieCard(movie);
                 svdContainer.appendChild(card);
             });
+
+            showResultsContainer();
         } catch (error) {
             console.error("Error fetching results:", error);
         }
@@ -366,12 +371,15 @@ document.addEventListener("DOMContentLoaded", () => {
     loadingIndicator.style.display = "none";
     carouselContent.style.display = "flex";
     summaryContainer.classList.add('visible');
+    summaryContainer.style.display = "block";
     const resultsContainer = document.querySelector('.results-container');
     if (resultsContainer) {
         resultsContainer.style.display = 'flex';
     }
-    if (scrollLeftButton) scrollLeftButton.style.display = 'block';
-    if (scrollRightButton) scrollRightButton.style.display = 'block';
+    if (svdScrollLeftButton) svdScrollLeftButton.style.display = 'block';
+    if (svdScrollRightButton) svdScrollRightButton.style.display = 'block';
+    if (knnScrollLeftButton) knnScrollLeftButton.style.display = 'block';
+    if (knnScrollRightButton) knnScrollRightButton.style.display = 'block';
 }
 
 function hideResultsContainer() {
@@ -379,8 +387,10 @@ function hideResultsContainer() {
     if (resultsContainer) {
         resultsContainer.style.display = 'none';
     }
-    if (scrollLeftButton) scrollLeftButton.style.display = 'none';
-    if (scrollRightButton) scrollRightButton.style.display = 'none';
+    // if (svdScrollLeftButton) svdScrollLeftButton.style.display = 'none';
+    // if (svdScrollRightButton) svdScrollRightButton.style.display = 'none';
+    // if (knnScrollLeftButton) knnScrollLeftButton.style.display = 'none';
+    // if (knnScrollRightButton) knnScrollRightButton.style.display = 'none';
 }
 
 // Attach click handler to shuffle button
