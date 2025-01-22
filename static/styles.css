@@ -1,9 +1,9 @@
-/* General styles */
+/* General Page Layout */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
     background: linear-gradient(180deg, #bf9884 40%, #e4ddda 100%);
-    background-attachment: fixed;
+    background-attachment: fixed; /* Ensures background stays fixed during scrolling */
     background-size: cover;
     color: white;
     text-align: center;
@@ -23,11 +23,10 @@ p {
     font-size: 1.5rem;
 }
 
-/* Layout */
 .container {
     max-width: 800px;
     width: 100%;
-    padding: 20px; /* Add horizontal padding to align with pick boxes */
+    padding: 20px; 
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -36,7 +35,7 @@ header {
     width: 100%;
     margin-bottom: 20px;
 }
-/* Picks section */
+
 .picks-container {
     display: flex;
     justify-content: center;
@@ -48,12 +47,10 @@ header {
 
 .pick-card {
     position: relative;
-    /* background: #ffffff; */
     border-radius: 15px;
     padding: 20px;
-    width: 250px; /* Adjusted width */
+    width: 250px; 
     text-align: center;
-    /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); */
     margin: 20px auto;
     display: flex;
     flex-direction: column;
@@ -68,8 +65,8 @@ header {
     border-radius: 10px;
 }
 
+/* Movie Input and Placeholder */
 .movie-placeholder {
-    /* background: #f5f5f5; */
     border-radius: 10px;
     padding: 20px;
     width: 100%;
@@ -95,7 +92,7 @@ header {
 }
 
 #results {
-    display: none;
+    display: none; /* Hidden by default, displayed when populated with data */
     flex-direction: row;
     gap: 20px;
     width: 1400px;
@@ -114,7 +111,6 @@ header {
     border-radius: 8px;
 }
 
-/*ADDED*/
 .movie-summary {
     font-size: 0.9rem;
     color: #555;
@@ -125,13 +121,13 @@ header {
 .card-controls {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Align input and button side by side */
-    gap: 10px; /* Space between input and button */
-    width: 100%; /* Full width of the card */
+    justify-content: space-between; 
+    gap: 10px; 
+    width: 100%; 
 }
 
 .card-controls input {
-    flex: 1; /* Input takes up remaining space */
+    flex: 1; 
     padding: 10px;
     font-size: 1rem;
     border: 1px solid #ccc;
@@ -190,7 +186,6 @@ header {
     object-fit: contain;
 }
 
-/* Shuffle section */
 .shuffle-container {
     display: flex;
     justify-content: center;
@@ -198,7 +193,7 @@ header {
 }
 
 .shuffle-button {
-    background: #e4ddda; /* Light pink */
+    background: #e4ddda; 
     border: none;
     border-radius: 50%;
     width: 60px;
@@ -212,23 +207,22 @@ header {
 }
 
 .shuffle-button i {
-    color: #7f5b55; /* Purple color for the icon */
-    font-size: 1.5rem; /* Adjust icon size */
+    color: #7f5b55; 
+    font-size: 1.5rem; 
 }
 
 .shuffle-button:hover {
-    transform: scale(1.1); /* Slightly enlarge on hover */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+    transform: scale(1.1); 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); 
 }
 
 .shuffle-button:active {
-    transform: scale(0.95); /* Slightly shrink when clicked */
+    transform: scale(0.95); 
 }
 
-/* Results section */
 .results-container {
     position: relative;
-    display: none; /*to not present the posters container by default*/
+    display: none;
     align-items: center;
     justify-content: center;
     gap: 10px;
@@ -241,16 +235,16 @@ header {
 }
 
 .result-item {
-    background: #6D489B; /* White background for each result */
-    border: 1px solid #ccc; /* Optional: Light border */
-    border-radius: 5px; /* Rounded corners */
-    padding: 10px 15px; /* Spacing inside each item */
-    text-align: center; /* Center text inside the item */
+    background: #6D489B; 
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+    padding: 10px 15px; 
+    text-align: center; 
     font-size: 1rem;
-    min-width: 150px; /* Set a minimum width for consistency */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for elevation */
-    flex: 1 1 calc(20% - 15px); /* Ensure items scale proportionally */
-    max-width: 200px; /* Optional: Limit the maximum width */
+    min-width: 150px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    flex: 1 1 calc(20% - 15px); 
+    max-width: 200px; 
 }
 
 .result-item:hover {
@@ -272,29 +266,29 @@ header {
 
 .carousel-container {
     overflow-x: hidden;
-    width: 650px; /* Account for scroll buttons */
+    width: 650px; 
     scroll-behavior: smooth;
     
 }
 
 .carousel-container::-webkit-scrollbar {
     display: flex;
-    gap: 20px; /* Consistent spacing between cards */
-    padding: 0 10px; /* Add some padding on the sides */
+    gap: 20px; 
+    padding: 0 10px; 
 }
 
 .carousel-content {
     display: flex;
     gap: 15px;
     padding: 0 10px;
-    align-items: center; /* Center cards vertically */
-    justify-content: flex-start; /* Align cards from the start */
+    align-items: center; 
+    justify-content: flex-start; 
 }
 
 .result-card {
-    flex: 0 0 160; /* Fixed width for each card */
-    height: 240px; /* Fixed height for each card */
-    background: transparent; /* Make card background transparent to match container */
+    flex: 0 0 160; 
+    height: 240px; 
+    background: transparent; 
     border-radius: 10px;
     padding: 10px;
     text-align: center;
@@ -310,9 +304,9 @@ header {
 }
 
 .result-card img {
-    width: 160px; /* Fixed width for all posters */
-    height: 240px; /* Fixed height for all posters */
-    object-fit: cover; /* This ensures images maintain aspect ratio without distortion */
+    width: 160px; 
+    height: 240px; 
+    object-fit: cover; 
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
@@ -345,7 +339,7 @@ header {
     border-top: 5px solid #7f5b55;
     border-radius: 50%;
     animation: spin 1s linear infinite;
-    margin: 0 auto; /* Center horizontally */
+    margin: 0 auto; 
 }
 
 @keyframes spin {
@@ -368,13 +362,13 @@ header {
     margin: 20px auto;
     width: 100%;
     max-width: 700px;
-    min-height: 150px; /* Set minimum height */
-    height: 150px; /* Set fixed height */
+    min-height: 150px; 
+    height: 150px; 
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     text-align: left;
-    overflow-y: auto; /* Enable vertical scrolling if content is too long */
-    position: relative; /* For better scroll handling */
-    display: none; /* Hide by default */
+    overflow-y: auto; 
+    position: relative; 
+    display: none;
     backdrop-filter: blur(5px);
 }
 
@@ -383,17 +377,17 @@ header {
     margin-bottom: 10px;
     font-size: 1.8rem;
     color: #7f5b55;
-    font-family: 'Poppins', sans-serif; /* Modern, bold font for titles */
+    font-family: 'Poppins', sans-serif; 
 }
 .summary-container p {
     margin: 0;
     font-size: 1.1rem;
     line-height: 1.6;
-    font-family: 'Roboto', sans-serif; /* Clean, readable font for summary text */
+    font-family: 'Roboto', sans-serif; 
 }
 
 .summary-container.visible {
-    display: block; /* Show when class is added */
+    display: block; 
 }
 
 #movie-input {
@@ -406,64 +400,64 @@ header {
 }
 
 .suggestions {
-    position: absolute; /* Position the list relative to the pick-card */
-    top: 100%; /* Place it right below the input */
-    left: 0; /* Align with the left edge of the pick-card */
-    background: white; /* Ensure background is white for contrast */
-    border: 1px solid #ccc; /* Add a border for separation */
-    border-radius: 5px; /* Match the input's border-radius */
-    width: calc(100%); /* Make it match the pick-card's width with some padding */
-    max-width: 300px; /* Optional: Limit maximum width */
-    max-height: 150px; /* Limit height for long lists */
-    overflow-y: auto; /* Enable scrolling for long lists */
-    z-index: 1000; /* Ensure it appears above other elements */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Add a soft shadow */
-    margin-top: 5px; /* Add a small gap below the input */
-    padding: 5px 0; /* Space inside the list */
-    font-size: 1rem; /* Adjust text size for readability */
+    position: absolute; 
+    top: 100%; 
+    left: 0;
+    background: white; 
+    border: 1px solid #ccc; 
+    border-radius: 5px;
+    width: calc(100%); 
+    max-width: 300px;
+    max-height: 150px; 
+    overflow-y: auto; 
+    z-index: 1000; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+    margin-top: 5px;
+    padding: 5px 0; 
+    font-size: 1rem;
 }
 
 .suggestions li {
-    padding: 10px; /* Add padding to each list item */
-    list-style: none; /* Remove bullet points */
-    cursor: pointer; /* Make the items clickable */
-    color: black; /* Ensure text is black for visibility */
+    padding: 10px; 
+    list-style: none;
+    cursor: pointer; 
+    color: black; 
 }
 
 .suggestions li:hover {
-    background: #f0f0f0; /* Highlight on hover */
-    color: #333; /* Darker gray for hover */
+    background: #f0f0f0;
+    color: #333; 
 }
-/* Hidden class for dropdown */
+
 .hidden {
     display: none;
 }
-/* Cover Flow Section */
+
 .cover-flow-wrapper {
-    background: white; /* White background */
+    background: white; 
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     margin: 30px auto;
     padding: 20px 0;
     max-width: 800px;
-    overflow: hidden; /* Hide overflowing content */
+    overflow: hidden; 
 }
 
 .cover-flow-container {
     display: flex;
     justify-content: center;
-    gap: 15px; /* Space between posters */
-    overflow-x: auto; /* Allow horizontal scrolling */
+    gap: 15px;
+    overflow-x: auto; 
     scroll-behavior: smooth;
     padding: 10px;
 }
 
 .cover-flow-container::-webkit-scrollbar {
-    display: none; /* Hide scrollbar for a clean look */
+    display: none; 
 }
 
 .cover-flow .poster {
-    flex: 0 0 auto; /* Prevent shrinking */
+    flex: 0 0 auto; 
     width: 10px;
     height: 10px;
     background: white;
@@ -475,31 +469,33 @@ header {
 }
 
 .cover-flow .poster img {
-    width: 100%; /* Fill the poster box */
+    width: 100%; 
     height: auto;
-    border-radius: 8px; /* Rounded corners for consistency */
+    border-radius: 8px; 
     margin-bottom: 10px;
 }
 
 .cover-flow .poster p {
-    font-size: 0.9rem; /* Match result-card text size */
+    font-size: 0.9rem; 
     color: #333;
     margin: 0;
     line-height: 1.3;
 }
 
 .cover-flow .poster.active {
-    transform: scale(1.05); /* Slight zoom on hover */
+    transform: scale(1.05); 
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
 .cover-flow .poster:hover {
-    transform: scale(1.1); /* Slightly larger for active poster */
+    transform: scale(1.1); 
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
+
+/* Scroll Buttons */
 .scroll-button {
     transform: translateY(-50%);
-    background: #e4ddda; /*same color as the shuffle button*/
+    background: #e4ddda; 
     color: #7f5b55;
     border: none;
     border-radius: 50%;
@@ -525,6 +521,6 @@ header {
 }
 
 .scroll-button:hover {
-    background-color: #e4ddda; /* Lighter pink on hover */
+    background-color: #e4ddda; 
     transform: translateY(-50%) scale(1.1);
 }

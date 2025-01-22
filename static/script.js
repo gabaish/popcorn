@@ -12,16 +12,19 @@ document.addEventListener("DOMContentLoaded", () => {
         placeholderId: "their-placeholder",
     });
 
+    // Sets up the movie input field to display suggestions as the user types
     function setupMovieInput({ inputId, suggestionsId, placeholderId }) {
         const movieInput = document.getElementById(inputId);
         const suggestionsList = document.getElementById(suggestionsId);
         const moviePlaceholder = document.getElementById(placeholderId);
 
+        // Fetches movie suggestions based on the query entered by the user
         async function fetchSuggestions(query) {
             const response = await fetch(`/search_movies?query=${query}`);
             return await response.json();
         }
 
+        // Listen for user input and fetch suggestions dynamically
         movieInput.addEventListener("input", async () => {
             const query = movieInput.value.trim();
             if (!query) {
@@ -36,14 +39,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 suggestions.forEach((movie) => {
                     const listItem = document.createElement("li");
                     listItem.textContent = movie;
-
+                    
+                    // Handle movie selection and poster display
                     listItem.addEventListener("click", async () => {
                         try {
                             movieInput.value = movie;
                             moviePlaceholder.textContent = "";
                             suggestionsList.classList.add("hidden");
                     
-                            // Fetch the movie poster URL
+                            // Fetch the movie poster
                             const response = await fetch(`/get_movie_poster?title=${encodeURIComponent(movie)}`);
                             if (!response.ok) {
                                 throw new Error('Failed to fetch movie poster');
@@ -90,27 +94,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    //ADDED:
-    //fixing titles. need to check if there are other cases as well
-    function formatMovieTitle(title) {
-        // Check if the title ends with a year in parentheses
-        const yearMatch = title.match(/\s*\((\d{4})\)$/);
-        const year = yearMatch ? yearMatch[0] : '';
-        
-        // Remove the year if it exists
-        let nameOnly = yearMatch ? title.slice(0, -yearMatch[0].length) : title;
-        
-        // Check for any article (The, A, An) at the end of the title
-        const articleMatch = nameOnly.match(/, (The|A|An)$/);
-        if (articleMatch) {
-            // Remove the article from the end and add it to the beginning
-            nameOnly = articleMatch[1] + ' ' + nameOnly.slice(0, -(articleMatch[0].length));
-        }
-        
-        // Return the formatted title with the year
-        return `${nameOnly.trim()}${year}`;
-    }
-
     // Set up dice buttons for random movies
     const diceButtons = document.querySelectorAll(".dice-button");
     diceButtons.forEach((button) => {
@@ -149,8 +132,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 movieImage.alt = data.movie;
                 movieImage.style.display = 'block'; 
 
-                // Hide summary when using dice
-                //summaryContainer.classList.remove('visible');
             } catch (error) {
                 console.error('Error fetching random movie:', error);
                 alert('Could not fetch a random movie. Please try again.');
@@ -158,8 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Set up carousel and movie summary functionality
-    // const carouselContainer = document.querySelector(".carousel-container");
+    // Get all required elements for next functions
     const knnCarouselContainer = document.getElementById("knn-results");
     const svdCarouselContainer = document.getElementById("svd-results");
     const resultsContainer = document.querySelector(".results-container");
@@ -206,95 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // async function fetchResults() {
-    //     try {
-    //         //the selected movies by the users
-    //         const movie1 = document.getElementById("your-movie-input").value;
-    //         const movie2 = document.getElementById("their-movie-input").value;
-    
-    //         if (movie1 === "Your Pick" || movie2 === "Their Pick") {
-    //             alert("Please select both movies first!");
-    //             return;
-    //         }
-            
-    //         resultsContainer.style.display = "flex";
-    //         loadingIndicator.style.display = "block";
-    //         carouselContent.style.display = "none";
-    //         summaryContainer.classList.remove('visible');
-
-    //         //fetching the returned 5 recommended movies with posters and summaries
-    //         const response = await fetch("/get_movie_results", {
-    //             method: "POST",
-    //             headers: { "Content-Type": "application/json" },
-    //             body: JSON.stringify({ movie1, movie2 }),
-    //         });
-    
-    //         const results = await response.json();
-    
-    //          // Clear existing content and returning to default state
-    //          carouselContent.innerHTML = "";
-    //          carouselContainer.scrollLeft = 0;
-    //          //hiding summary while loading new recommendations
-    //          //summaryContainer.classList.remove('visible');
-    
-    //          //showResultsContainer();
-
-    //         // Show scroll buttons if there are movies
-    //         if (results.length > 0) {
-    //             //if (scrollLeftButton) scrollLeftButton.style.display = 'block';
-    //             //if (scrollRightButton) scrollRightButton.style.display = 'block';
-                
-    //             // Create and append movie cards
-    //             results.forEach((movie) => {
-    //                 const card = document.createElement("div");
-    //                 card.classList.add("result-card");
-                    
-
-    //                 if (movie.poster_url && !movie.poster_url.includes("placeholder")) {
-    //                     card.innerHTML = `<img src="${movie.poster_url}" alt="${movie.title}">`;
-    //                 } else {
-    //                     card.innerHTML = `<div class="movie-title">${movie.title}</div>`;
-    //                 }
-
-    //                 //card.innerHTML = `
-    //                 //    <img src="${movie.poster_url}" alt="${movie.title}">
-    //                 //`;
-    
-    //                 card.addEventListener("click", () => {
-    //                     const formattedTitle = formatMovieTitle(movie.title);
-    //                     summaryContainer.classList.add('visible');
-    //                     summaryContainer.innerHTML = `
-    //                         <h2>${formattedTitle}</h2>
-    //                         <p>${movie.summary || "No summary available."}</p>
-    //                     `;
-                        
-    //                     document.querySelectorAll('.result-card').forEach(c => 
-    //                         c.style.transform = 'scale(1)');
-    //                     card.style.transform = 'scale(1.05)';
-    //                 });
-    
-    //                 carouselContent.appendChild(card);
-    //             });
-    
-    //             // Show the summary for the first movie after a short delay
-    //             setTimeout(() => {
-    //                 const formattedTitle = formatMovieTitle(results[0].title);
-    //                 summaryContainer.classList.add('visible');
-    //                 summaryContainer.innerHTML = `
-    //                     <h2>${formattedTitle}</h2>
-    //                     <p>${results[0].summary || "No summary available."}</p>
-    //                 `;
-    //             }, 100);
-    //         }
-
-    //         showResultsContainer();
-    
-    //     } catch (error) {
-    //         console.error("Error fetching movie results:", error);
-    //         summaryContainer.innerHTML = "<p>Error loading movie information.</p>";
-    //     }
-    // }
-
+    // Fetches movie recommendations and displays them in the results container
     async function fetchResults() {
         try {
             const movie1 = document.getElementById("your-movie-input").value;
@@ -305,7 +197,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            // const resultsContainer = document.getElementById("results");
             resultsContainer.style.display = "none";
             loadingIndicator.style.display = "block";
             carouselContent.style.display = "none";
@@ -314,8 +205,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const knnContainer = document.getElementById("knn-results");
             const svdContainer = document.getElementById("svd-results");
-
-            console.log("got the containers");
     
             knnContainer.innerHTML = "";
             svdContainer.innerHTML = "";
@@ -328,8 +217,6 @@ document.addEventListener("DOMContentLoaded", () => {
             });
     
             const data = await response.json();
-
-            console.log("got the data: " , data );
     
             // Populate KNN results
             data.knn.forEach((movie) => {
@@ -349,6 +236,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
     
+    // Creates a card for displaying a movie with its poster and summary
     function createMovieCard(movie) {
         const card = document.createElement("div");
         card.classList.add("result-card");
@@ -357,6 +245,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ? `<img src="${movie.poster_url}" alt="${movie.title}">`
             : `<div class="movie-title">${movie.title}</div>`;
     
+        // Display movie summary on card click
         card.addEventListener("click", () => {
             const summaryContainer = document.getElementById("movie-summary");
             summaryContainer.innerHTML = `<h2>${movie.title}</h2><p>${movie.summary}</p>`;
@@ -366,32 +255,21 @@ document.addEventListener("DOMContentLoaded", () => {
         return card;
     }
 
-    
-   function showResultsContainer() {
-    loadingIndicator.style.display = "none";
-    carouselContent.style.display = "flex";
-    summaryContainer.classList.add('visible');
-    summaryContainer.style.display = "block";
-    const resultsContainer = document.querySelector('.results-container');
-    if (resultsContainer) {
-        resultsContainer.style.display = 'flex';
+    // Displays the results container and associated elements
+    function showResultsContainer() {
+        loadingIndicator.style.display = "none";
+        carouselContent.style.display = "flex";
+        summaryContainer.classList.add('visible');
+        summaryContainer.style.display = "block";
+        const resultsContainer = document.querySelector('.results-container');
+        if (resultsContainer) {
+            resultsContainer.style.display = 'flex';
+        }
+        if (svdScrollLeftButton) svdScrollLeftButton.style.display = 'block';
+        if (svdScrollRightButton) svdScrollRightButton.style.display = 'block';
+        if (knnScrollLeftButton) knnScrollLeftButton.style.display = 'block';
+        if (knnScrollRightButton) knnScrollRightButton.style.display = 'block';
     }
-    if (svdScrollLeftButton) svdScrollLeftButton.style.display = 'block';
-    if (svdScrollRightButton) svdScrollRightButton.style.display = 'block';
-    if (knnScrollLeftButton) knnScrollLeftButton.style.display = 'block';
-    if (knnScrollRightButton) knnScrollRightButton.style.display = 'block';
-}
-
-function hideResultsContainer() {
-    const resultsContainer = document.querySelector('.results-container');
-    if (resultsContainer) {
-        resultsContainer.style.display = 'none';
-    }
-    // if (svdScrollLeftButton) svdScrollLeftButton.style.display = 'none';
-    // if (svdScrollRightButton) svdScrollRightButton.style.display = 'none';
-    // if (knnScrollLeftButton) knnScrollLeftButton.style.display = 'none';
-    // if (knnScrollRightButton) knnScrollRightButton.style.display = 'none';
-}
 
 // Attach click handler to shuffle button
 const shuffleButton = document.querySelector(".shuffle-button");

@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
 import pandas as pd
 import numpy as np
 from scipy.sparse.linalg import svds
@@ -46,8 +43,8 @@ sigma = np.diag(sigma)
 title_to_movieId = dict(zip(movies2['title'], movies2['movieId']))
 movieId_to_title = dict(zip(movies2['movieId'], movies2['title']))
 
+# Get the index of a movie in the SVD matrix
 def get_movie_index(movie_title):
-    """Get the index of a movie in the SVD matrix."""
     if movie_title not in title_to_movieId:
         return None
     movie_id = title_to_movieId[movie_title]
@@ -55,8 +52,8 @@ def get_movie_index(movie_title):
         return None
     return movie_mapper[movie_id]
 
+# Find similar movies using SVD latent features
 def find_similar_movies_svd(movie_title, n_recommendations=5):
-    """Find similar movies using SVD latent features."""
     movie_idx = get_movie_index(movie_title)
     if movie_idx is None:
         return []
@@ -82,8 +79,8 @@ def find_similar_movies_svd(movie_title, n_recommendations=5):
     
     return similar_movies
 
+# Generate recommendations based on two input movies using SVD
 def recommend_for_two_users_with_five_results_svd(movie1, movie2):
-    """Generate recommendations based on two input movies using SVD."""
     # Get recommendations for both movies
     recommendations1 = find_similar_movies_svd(movie1, n_recommendations=10)
     recommendations2 = find_similar_movies_svd(movie2, n_recommendations=10)
@@ -111,22 +108,24 @@ def recommend_for_two_users_with_five_results_svd(movie1, movie2):
     
     # Sort by combined score
     sorted_recommendations = sorted(combined_scores.items(), key=lambda x: x[1], reverse=True)
+    recommendations = [movie for movie, _ in sorted_recommendations[:5]]
     
+    print("Top 5 SVD recommendations:", recommendations)
     # Return top 5 recommendations
-    return [movie for movie, _ in sorted_recommendations[:5]]
+    return recommendations
 
-# TMDB API functions remain unchanged
+# TMDB API 
 TMDB_API_KEY = "f9c68fee291e011281ee8722f40fbc18"
 TMDB_BASE_URL = 'https://api.themoviedb.org/3'
 
+# Normalize movie titles by removing articles and year
 def normalize_title(title):
-    """Normalize movie titles by removing articles and year."""
     clean_title = re.sub(r"\s\(\d{4}\)$", "", title)
     clean_title = re.sub(r"^(The|A|An)\s", "", clean_title, flags=re.IGNORECASE)
     return clean_title.strip()
 
+# Fetches the poster URL and summary for a given movie title using TMDb API
 def get_movie_poster_tmdb(title):
-    """Fetches the poster URL and summary for a given movie title using TMDb API."""
     match = re.search(r"\((\d{4})\)$", title)
     year = match.group(1) if match else None
     clean_title = normalize_title(title)
@@ -157,33 +156,8 @@ def get_movie_poster_tmdb(title):
     
     return None, 'No summary available'
 
-
-# def recommend_for_multiple_movies(movie_list):
-#     combined_recommendations = {}
-    
-#     # Get recommendations for each movie
-#     for movie in movie_list:
-#         recs = find_similar_movies_svd(movie, n_recommendations=10)
-#         for title,score in recs:
-#             combined_recommendations[title] = combined_recommendations.get(title, 0) + (1-score)
-
-#     # Sort by combined scores
-#     ranked_recommendations = sorted(combined_recommendations.items(), key=lambda x: x[1], reverse=True)
-    
-#     # Extract just the titles
-#     return [title for title, _ in ranked_recommendations[:5]]
-
+# Generate recommendations based on multiple input movies using SVD.
 def recommend_for_multiple_movies(movie_list, n_recommendations=5):
-    """
-    Generate recommendations based on multiple input movies using SVD.
-    
-    Args:
-        movie_list (list): List of movie titles
-        n_recommendations (int): Number of recommendations to return
-        
-    Returns:
-        list: Top n_recommendations movies
-    """
     if not movie_list:
         return []
     

@@ -1,8 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
 import pandas as pd
 import numpy as np
 from sklearn.neighbors import NearestNeighbors
@@ -10,45 +5,35 @@ from scipy.sparse import csr_matrix
 import requests
 import re
 
-TMDB_API_KEY = "f9c68fee291e011281ee8722f40fbc18"  # TMDB API key
+# TMDb API configuration
+TMDB_API_KEY = "f9c68fee291e011281ee8722f40fbc18" 
 TMDB_BASE_URL = 'https://api.themoviedb.org/3'
 
-# In[2]:
-
+# Load datasets
 movies2 = pd.read_csv('data/movies3.csv')
 ratings = pd.read_csv('data/ratings.csv')
 
-
-# In[3]:
-
-merged_data = pd.merge(ratings, movies2, on='movieId')  # merging the data of ratings and movies
+# Merge movie and rating datasets
+merged_data = pd.merge(ratings, movies2, on='movieId')
 
 
-# In[4]:
+# Create a sparse matrix of users and movies for recommendation modeling
+row = merged_data['userId'].astype('category').cat.codes  # Unique user IDs as matrix rows
+col = merged_data['title'].astype('category').cat.codes  # Unique movie titles as matrix columns
+data = merged_data['rating'].values   # Ratings as matrix data
+user_movie_sparse = csr_matrix((data, (row, col))) # Sparse matrix representation
 
-# Sparse user-movie matrix
-row = merged_data['userId'].astype('category').cat.codes  # users
-col = merged_data['title'].astype('category').cat.codes  # movies
-data = merged_data['rating'].values  # ratings
-user_movie_sparse = csr_matrix((data, (row, col)))
-
-
-# In[5]:
 
 # Mapping movie titles to their corresponding columns in the sparse matrix
 title_to_index = dict(enumerate(merged_data['title'].astype('category').cat.categories))
 index_to_title = {v: k for k, v in title_to_index.items()}
 
-
-# In[6]:
-
+# Build Nearest Neighbors model
 # Computing movie similarity based on user ratings
 model = NearestNeighbors(metric='cosine', algorithm='brute')
-model.fit(user_movie_sparse.T)  # rows represent movies, columns represent users
+model.fit(user_movie_sparse.T)  # Transpose: rows represent movies, columns represent users
 
-
-# In[7]:
-
+# Recommend similar movies based on the given movie title using Nearest Neighbors
 def recommend_movies_by_title_nn(movie_title, model, user_movie_sparse, top_n=5):
     """Recommend similar movies based on the given movie title."""
     if movie_title not in index_to_title:
@@ -63,9 +48,6 @@ def recommend_movies_by_title_nn(movie_title, model, user_movie_sparse, top_n=5)
     # Return the top N similar movies
     similar_movies = [(title_to_index[i], distances[0][j]) for j, i in enumerate(indices[0]) if i != movie_idx]
     return similar_movies[:top_n]
-
-
-# In[8]:
 
 def recommend_for_two_users_with_five_results(user1_movie, user2_movie):
     """Recommend movies for two users with guaranteed 5 results."""
@@ -96,15 +78,12 @@ def recommend_for_two_users_with_five_results(user1_movie, user2_movie):
 
     # Return top 5 recommendations
     ranked_recommendations = sorted(combined_scores, key=combined_scores.get, reverse=True)
-    return ranked_recommendations[:top_n]
+    recommendations = ranked_recommendations[:top_n]
+    print("Top 5 KNN recommendations:", recommendations)
+    return recommendations
 
-
-# In[9]:
+# Normalize movie titles by removing articles and years
 def normalize_title(title):
-    """
-    Normalizes movie titles by removing articles, year in parentheses,
-    and trimming whitespace.
-    """
     # Remove year in parentheses (e.g., "Pulp Fiction (1994)" -> "Pulp Fiction")
     clean_title = re.sub(r"\s\(\d{4}\)$", "", title)
     
@@ -113,15 +92,11 @@ def normalize_title(title):
     
     return clean_title.strip()
 
-
+# Fetch the poster URL and summary for a given movie title using TMDb API
 def get_movie_poster_tmdb(title):
-    """
-    Fetches the poster URL and summary for a given movie title using TMDb API.
-    """
     match = re.search(r"\((\d{4})\)$", title)
     year = match.group(1) if match else None
     clean_title = normalize_title(title)
-    print(f"Querying TMDb: title={clean_title}, year={year}")
 
     queries = [
         {"query": title, "year": year},          # Original title with year
@@ -137,10 +112,6 @@ def get_movie_poster_tmdb(title):
         response = requests.get(search_url, params=params)
         data = response.json()
         
-        # Debugging output
-        print(f"Querying TMDb: {params}")
-        print(f"Response: {data}")
-        
         if response.status_code == 200 and data['results']:
             # Get the first result's poster path
             result = data['results'][0]
@@ -155,23 +126,15 @@ def get_movie_poster_tmdb(title):
             return poster_url, summary
     return None,'No summary available'  # No poster found
 
-# In[10]:
-
+# Display movie posters for a list of recommended titles
 def display_movie_posters_tmdb(recommended_titles):
-    """
-    Displays posters for a list of recommended movie titles using TMDb.
-    """
     for title in recommended_titles:
         poster_url = get_movie_poster_tmdb(title)
-        print(f"Poster URL: {poster_url}")
         if poster_url:
-            print(f"Poster for '{title}':")
             display(Image(url=poster_url, width=200))
         else:
             print(f"No poster found for '{title}'.")
 
-
-# In[11]:
 
 # Example usage (uncomment to run):
 # user1_movie = "Toy Story (1995)"

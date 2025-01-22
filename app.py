@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-from logic import recommend_for_two_users_with_five_results, get_movie_poster_tmdb
+from logic_knn import recommend_for_two_users_with_five_results, get_movie_poster_tmdb
 from logic_svd import recommend_for_two_users_with_five_results_svd
 import pandas as pd
 
@@ -8,80 +8,43 @@ app = Flask(__name__)
 # Load your dataset and model
 df = pd.read_csv("data/movies3.csv")
 
-# Define your recommendation logic
-def recommend_movies(user_input):
-    # Example logic, replace with your actual logic
-    recommendations = df.sample(5)['movie_title'].tolist()
-    return recommendations
-
+# Render the home page of the application
 @app.route('/')
 def home():
     return render_template('index.html')
 
+# Handle search queries for movie titles
 @app.route("/search_movies", methods=["GET"])
 def search_movies():
     query = request.args.get("query", "").lower()
     if not query:
         return jsonify([])  # Return empty list if no query
-    matching_movies = df[df["title"].str.lower().str.contains(query)].head(10)  # Limit results
-    suggestions = matching_movies["title"].tolist()
+    matching_movies = df[df["title"].str.lower().str.contains(query)].head(10)  # Filter matching titles
+    suggestions = matching_movies["title"].tolist() # Extract the titles as a list
     return jsonify(suggestions)
 
-@app.route('/recommend', methods=['POST'])
-def recommend():
-    user_input = request.json.get('user_input')  # Fetch input from the frontend
-    recommendations = recommend_movies(user_input)
-    return jsonify(recommendations)
-
-# route for generating a random movie selection
+# Select a random movie from the dataset and fetch its poster URL
 @app.route('/random_movie', methods=['GET'])
 def random_movie():
     random_movie = df.sample(n=1).iloc[0]['title']  # column is named 'title'
     random_movie_url = get_movie_poster_tmdb(random_movie);
     return jsonify({'movie': random_movie,'poster_url':random_movie_url})
 
-# # route for getting recommandations from logic file
-# @app.route('/get_movie_results', methods=['POST'])
-# def get_movie_results():
-#     data = request.json  # Expect JSON input
-#     movie1 = data.get("movie1")
-#     movie2 = data.get("movie2")
-    
-#     if not movie1 or not movie2:
-#         return jsonify({"error": "Both movies are required"}), 400
-
-#     # Call the Python function
-#     results = recommend_for_two_users_with_five_results_svd(movie1, movie2)
-#     print(results)
-    
-#     #ADDED
-#     # Include posters for each recommendation
-#     recommendations_with_posters_and_summary = []
-#     for movie in results:
-#         poster_url, summary = get_movie_poster_tmdb(movie)  # Fetch poster URL
-#         recommendations_with_posters_and_summary.append({
-#             "title": movie,
-#             "poster_url": poster_url if poster_url else "https://via.placeholder.com/500",
-#             "summary": summary if summary else "No summary available."
-#         })
-
-#     # Return the results as JSON
-#     return jsonify(recommendations_with_posters_and_summary)
-
+# Generate movie recommendations using KNN and SVD models for two selected movies
 @app.route('/get_movie_results', methods=['POST'])
 def get_movie_results():
-    data = request.json  # Expect JSON input
+    data = request.json
     movie1 = data.get("movie1")
     movie2 = data.get("movie2")
     
     if not movie1 or not movie2:
         return jsonify({"error": "Both movies are required"}), 400
 
-    # Fetch results from both models
+    # Fetch recommendations  from both models
     knn_results = recommend_for_two_users_with_five_results(movie1, movie2)
     svd_results = recommend_for_two_users_with_five_results_svd(movie1, movie2)
 
-    # Add posters and summaries for KNN results
+    # Prepare KNN recommendations with posters and summaries
     knn_recommendations = []
     for movie in knn_results:
         poster_url, summary = get_movie_poster_tmdb(movie)
@@ -91,7 +54,7 @@ def get_movie_results():
             "summary": summary if summary else "No summary available."
         })
 
-    # Add posters and summaries for SVD results
+    # Prepare SVD recommendations with posters and summaries
     svd_recommendations = []
     for movie in svd_results:
         poster_url, summary = get_movie_poster_tmdb(movie)
@@ -106,6 +69,7 @@ def get_movie_results():
         "svd": svd_recommendations
     })
 
+# Fetch the poster URL for a given movie title
 @app.route('/get_movie_poster', methods=['GET'])
 def get_movie_poster():
     movie_name = request.args.get('title')
