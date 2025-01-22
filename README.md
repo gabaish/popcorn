@@ -12,7 +12,7 @@ Popcorn is a movie recommendation system designed to help users find movies for 
 
 The Movie Night Dilemma is a common social challenge that emerges when friends, couples, or families attempt to select a film that satisfies everyone's tastes. Unlike traditional recommendation systems that focus on individual users, the challenge here lies in finding a middle ground between different, often conflicting, viewing preferences. Consider a couple planning their date night - one person might enjoy intense psychological thrillers while their partner prefers lighthearted comedies. Existing streaming platforms typically focus on single-user recommendations, leaving the challenge of reconciling diverse tastes unaddressed.
 
-![popcorn_icon_bottom](https://github.com/user-attachments/assets/4cbc7b8a-d437-4292-be34-228cd5691ec0)   ![popcorn_icon_bottom](https://github.com/user-attachments/assets/2db13b00-2a03-47ba-9b6f-1982436d19c4)  ![popcorn_icon_bottom](https://github.com/user-attachments/assets/84e98d83-4e25-4768-86bb-69dfda1722ff)  ![popcorn_icon_bottom](https://github.com/user-attachments/assets/e39bd607-46a1-42f2-8618-348224c836a6)
+![popcorn_icon_bottom](https://github.com/user-attachments/assets/4cbc7b8a-d437-4292-be34-228cd5691ec0)![popcorn_icon_bottom](https://github.com/user-attachments/assets/2db13b00-2a03-47ba-9b6f-1982436d19c4)![popcorn_icon_bottom](https://github.com/user-attachments/assets/84e98d83-4e25-4768-86bb-69dfda1722ff)![popcorn_icon_bottom](https://github.com/user-attachments/assets/e39bd607-46a1-42f2-8618-348224c836a6)
 
 
 
