@@ -2,7 +2,7 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(180deg, #6D489B 40%, #BD06C1 100%);
+    background: linear-gradient(180deg, #bf9884 40%, #e4ddda 100%);
     background-attachment: fixed;
     background-size: cover;
     color: white;
@@ -13,14 +13,14 @@ body {
 }
 
 h1 {
-    font-family: 'Poppins', sans-serif;
-    font-size: 3rem;
-    margin: 20px 0 10px;
+    font-family: 'Carter One', cursive;
+    font-size: 4.5rem;
+    margin: 20px 0 5px;
 }
 
 p {
     font-family: 'Poppins', sans-serif;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
 }
 
 /* Layout */
@@ -111,7 +111,6 @@ header {
     display: flex;
     gap: 10px;
     padding: 10px;
-    background-color: #333;
     border-radius: 8px;
 }
 
@@ -140,7 +139,7 @@ header {
 }
 
 .dice-button {
-    background: #6a0dad;
+    background: #7f5b55;
     color: white;
     border: none;
     border-radius: 50%;
@@ -177,9 +176,17 @@ header {
     font-size: 1rem;
 }
 
+.icon {
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
 .icon img {
-    width: 100px;
-    height: 100px;
+    margin-top: 20px;
+    width: 130px;
+    height: 130px;
     object-fit: contain;
 }
 
@@ -191,7 +198,7 @@ header {
 }
 
 .shuffle-button {
-    background: #f3a6d4; /* Light pink */
+    background: #e4ddda; /* Light pink */
     border: none;
     border-radius: 50%;
     width: 60px;
@@ -205,7 +212,7 @@ header {
 }
 
 .shuffle-button i {
-    color: #6a0dad; /* Purple color for the icon */
+    color: #7f5b55; /* Purple color for the icon */
     font-size: 1.5rem; /* Adjust icon size */
 }
 
@@ -375,7 +382,7 @@ header {
     margin-top: 0;
     margin-bottom: 10px;
     font-size: 1.8rem;
-    color: #6a0dad;
+    color: #7f5b55;
     font-family: 'Poppins', sans-serif; /* Modern, bold font for titles */
 }
 .summary-container p {
@@ -492,8 +499,8 @@ header {
 }
 .scroll-button {
     transform: translateY(-50%);
-    background: #f3a6d4; /*same color as the shuffle button*/
-    color: #6a0dad;
+    background: #e4ddda; /*same color as the shuffle button*/
+    color: #7f5b55;
     border: none;
     border-radius: 50%;
     width: 40px;
@@ -518,6 +525,6 @@ header {
 }
 
 .scroll-button:hover {
-    background-color: #ffc0cb; /* Lighter pink on hover */
+    background-color: #e4ddda; /* Lighter pink on hover */
     transform: translateY(-50%) scale(1.1);
 }

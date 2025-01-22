@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Popcorn</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Poppins:wght@500;600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Carter+One&family=Cookie:wght@400;500&display=swap" rel="stylesheet">
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M15 35 L25 95 L75 95 L85 35 Z' fill='%23EF4444' stroke='%23991B1B' stroke-width='3'/><path d='M30 35 L35 95 M50 35 L50 95 M70 35 L65 95' stroke='white' stroke-width='5'/><circle cx='30' cy='30' r='15' fill='%23FDE68A' stroke='%23F59E0B' stroke-width='3'/><circle cx='50' cy='25' r='15' fill='%23FDE68A' stroke='%23F59E0B' stroke-width='3'/><circle cx='70' cy='30' r='15' fill='%23FDE68A' stroke='%23F59E0B' stroke-width='3'/><circle cx='40' cy='35' r='15' fill='%23FDE68A' stroke='%23F59E0B' stroke-width='3'/><circle cx='60' cy='35' r='15' fill='%23FDE68A' stroke='%23F59E0B' stroke-width='3'/></svg>">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
@@ -12,7 +14,11 @@
 <body>
     <div class="container">
         <header>
-            <h1>Popcorn</h1>
+            <div class="icon">
+                <h1>Popcorn</h1>
+                <img src="{{ url_for('static', filename='popcorn.png') }}" alt="Popcorn">
+            </div>
+            
             <p>Helps you pick the best movie for your date night</p>
         </header>
         <main>
@@ -33,9 +39,7 @@
                     </div>
                     
                 </div>                
-                <div class="icon">
-                    <img src="{{ url_for('static', filename='popcorn.png') }}" alt="Popcorn">
-                </div>
+                
                 <div class="pick-card">
                     <div class="movie-placeholder">
                         <p id="their-placeholder">Their Pick</p>
